@@ -55,7 +55,7 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
           } hover:text-amber-700`}
           aria-label="Artisan Crafts Home"
         >
-          Artisan Crafts
+          Crafts Shop
         </Link>
 
         {/* Desktop Navigation */}
@@ -155,7 +155,7 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
       >
         <nav
           className={`flex flex-col space-y-4 bg-amber-900/95 p-4 ${
-            isScrolled ? 'text-amber-100' : 'text-amber-900'
+            isScrolled ? 'text-amber-900' : 'text-amber-900'
           }`}
           aria-label="Mobile navigation"
         >
@@ -166,7 +166,7 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
               className={`font-medium text-base transition-colors ${
                 isScrolled
                   ? 'text-amber-100 hover:text-white focus:text-white'
-                  : 'text-amber-900 hover:text-amber-700 focus:text-amber-700'
+                  : 'text-amber-100 hover:text-amber-700 focus:text-amber-700'
               } focus:outline-none focus:ring-2 focus:ring-amber-500 rounded`}
               onClick={() => setIsMobileMenuOpen(false)}
             >

@@ -339,7 +339,7 @@ export default function Home() {
           </motion.h2>
           <div className="flex flex-col md:flex-row items-center gap-10">
             <motion.div
-              className="md:w-1/2"
+              className="w-full md:w-1/2 lg:w-1/2"
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-100px" }}
@@ -479,7 +479,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className={`${playfair.className} text-2xl font-bold mb-4 text-white`}>Artisan Crafts</h3>
+              <h3 className={`${playfair.className} text-2xl font-bold mb-4 text-white`}>Crafts Shop</h3>
               <p className="mb-4">Preserving traditional craftsmanship through modern appreciation.</p>
               <div className="flex space-x-4">
                 <a href="#" className="text-amber-200 hover:text-white transition-colors">
