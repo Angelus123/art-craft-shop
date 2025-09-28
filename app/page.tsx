@@ -4,6 +4,7 @@ import { Inter, Playfair_Display } from 'next/font/google';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import Header from './components/Header';
+import Hero from './components/Hero';
 
 // Define interfaces for data structures
 interface Product {
@@ -125,69 +126,7 @@ export default function Home() {
       <Header cart={cart} isScrolled={isScrolled} />
 
       {/* Hero Section with Parallax */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-amber-800 bg-cover bg-center bg-fixed">
-          <motion.div
-            className="absolute inset-0 bg-[url('/images/hero.jpg')] bg-cover bg-center"
-            initial={{ scale: 1.2 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 10, ease: 'easeOut' }}
-            aria-label="Background image of traditional crafts"
-          />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-amber-900/80 to-amber-600/60 z-10" />
-        <div className="container mx-auto px-4 relative z-20 text-center text-white mt-16">
-          <motion.h1
-            className={`${playfair.className} text-5xl md:text-7xl font-bold mb-6 drop-shadow-lg`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-          >
-            Traditional Art & Craft
-          </motion.h1>
-          <motion.p
-            className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2 }}
-          >
-            Discover unique handmade treasures that weave stories of cultural heritage and masterful craftsmanship
-          </motion.p>
-          <motion.div
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.4 }}
-          >
-            <Link
-              href="/shop"
-              className="bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-10 rounded-full transition duration-300 transform hover:scale-105 shadow-lg"
-            >
-              Shop Now
-            </Link>
-            <Link
-              href="/about"
-              className="border-2 border-white hover:bg-white/20 text-white font-semibold py-3 px-10 rounded-full transition duration-300 transform hover:scale-105"
-            >
-              Our Story
-            </Link>
-          </motion.div>
-        </div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-        >
-          <div className="animate-bounce">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-            </svg>
-          </div>
-        </motion.div>
-      </section>
+      < Hero />
 
       {/* Featured Categories */}
       <section className="py-20 bg-white">
@@ -479,7 +418,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className={`${playfair.className} text-2xl font-bold mb-4 text-white`}>Crafts Shop</h3>
+              <h3 className={`${playfair.className} text-2xl font-bold mb-4 text-white`}>Insight Art Space</h3>
               <p className="mb-4">Preserving traditional craftsmanship through modern appreciation.</p>
               <div className="flex space-x-4">
                 <a href="#" className="text-amber-200 hover:text-white transition-colors">

@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Craft Shop",
-  description: "GDiscover our Crafts. Our artisan craft shop offers unique supplies, hands-on workshops, and beautiful handmade gifts for every occasion.",
+  title: "Insight Art Space",
+  description: "GDiscover our Crafts. Our artisan Insight Art Space offers unique supplies, hands-on workshops, and beautiful handmade gifts for every occasion.",
 };
 
 export default function RootLayout({

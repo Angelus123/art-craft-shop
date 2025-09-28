@@ -42,7 +42,7 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
   return (
     <header
       className={`fixed w-full z-30 transition-all duration-300 ${
-        isScrolled ? 'bg-amber-900 shadow-md py-2' : 'bg-white/60 py-4'
+        isScrolled ? 'bg-amber-900 shadow-md py-2' : 'bg-white py-4'
       }`}
       role="banner"
     >
@@ -55,7 +55,7 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
           } hover:text-amber-700`}
           aria-label="Artisan Crafts Home"
         >
-          Crafts Shop
+          Insight Art Space
         </Link>
 
         {/* Desktop Navigation */}
@@ -64,10 +64,10 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
             <Link
               key={link.href}
               href={link.href}
-              className={`font-medium text-base transition-colors ${
+              className={`text-base transition-colors font-bold ${
                 isScrolled
-                  ? 'text-amber-100 hover:text-white focus:text-white'
-                  : 'text-amber-900 hover:text-amber-700 focus:text-amber-700'
+                  ? 'text-amber-100 font-bold hover:text-white focus:text-white'
+                  : 'text-amber-900 font-bold hover:text-amber-700 focus:text-amber-700'
               } focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 rounded`}
             >
               {link.label}
