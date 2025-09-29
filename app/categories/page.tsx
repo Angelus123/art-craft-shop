@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Playfair_Display } from 'next/font/google';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 // Import the font
 const playfair = Playfair_Display({ subsets: ['latin'], weight: ['400', '700'] });
@@ -119,6 +120,7 @@ const Categories: React.FC = () => {
           ))}
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

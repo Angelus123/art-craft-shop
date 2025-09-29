@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation'; // Import usePathname
 import { Inter, Playfair_Display } from 'next/font/google';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -27,16 +28,18 @@ interface NavLink {
 
 export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const pathname = usePathname(); // Get the current pathname
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen((prev) => !prev);
   };
 
   const navLinks: NavLink[] = [
+    { href: '/', label: 'About' },
     { href: '/shop', label: 'Shop' },
     { href: '/categories', label: 'Categories' },
     { href: '/artisans', label: 'Artisans' },
-    { href: '/about', label: 'About' },
+    { href: '/gallery', label: 'Gallery' }
   ];
 
   return (
@@ -65,9 +68,13 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
               key={link.href}
               href={link.href}
               className={`text-base transition-colors font-bold ${
-                isScrolled
-                  ? 'text-amber-100 font-bold hover:text-white focus:text-white'
-                  : 'text-amber-900 font-bold hover:text-amber-700 focus:text-amber-700'
+                pathname === link.href
+                  ? isScrolled
+                    ? 'text-white underline underline-offset-4'
+                    : 'text-amber-700 underline underline-offset-4'
+                  : isScrolled
+                  ? 'text-amber-100 hover:text-white focus:text-white'
+                  : 'text-amber-900 hover:text-amber-700 focus:text-amber-700'
               } focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 rounded`}
             >
               {link.label}
@@ -84,7 +91,7 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
+            className="h-6 w-7 bg-amber-800 rounded-full"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -164,7 +171,9 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
               key={link.href}
               href={link.href}
               className={`font-medium text-base transition-colors ${
-                isScrolled
+                pathname === link.href
+                  ? 'text-white underline underline-offset-4'
+                  : isScrolled
                   ? 'text-amber-100 hover:text-white focus:text-white'
                   : 'text-amber-100 hover:text-amber-700 focus:text-amber-700'
               } focus:outline-none focus:ring-2 focus:ring-amber-500 rounded`}
