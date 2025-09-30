@@ -1,435 +1,422 @@
-// app/gallery/page.tsx
 'use client';
-
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Playfair_Display } from 'next/font/google';
+import { X, Heart, Share2, ShoppingBag, ZoomIn, Star } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { ChevronLeft, ChevronRight, ZoomIn, Play, Pause, Plus, Minus, ShoppingCart, X } from 'lucide-react';
 
 const playfair = Playfair_Display({ subsets: ['latin'], weight: ['400', '700'] });
 
-const products = [
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+  category: string;
+  description: string;
+  dimensions?: { width: number; height: number };
+  materials?: string;
+  rating: number;
+  reviews: number;
+}
+
+const products: Product[] = [
   {
     id: 1,
     name: 'Handwoven Basket',
-    description: 'Intricately woven from natural fibers, perfect for storage or decor. This beautiful basket is crafted by skilled artisans using sustainable materials that are both durable and eco-friendly.',
+    description: 'Intricately woven from natural fibers, perfect for storage or decor. This sustainable piece blends traditional craftsmanship with modern eco-conscious design.',
     price: 45.99,
     image: '/images/products/basket.jpg',
+    category: 'home-decor',
+    dimensions: { width: 3, height: 2 },
+    rating: 4.8,
+    reviews: 45,
+    materials: 'Natural fibers, sustainable materials',
   },
   {
     id: 2,
     name: 'Ceramic Vase',
-    description: 'Hand-painted with traditional motifs, adds elegance to any space. Each vase is unique, featuring patterns passed down through generations of ceramic artists.',
+    description: 'Hand-painted with bold, contrasting motifs inspired by 2025 trends. Each unique vase features patterns that merge heritage with contemporary personalization.',
     price: 59.99,
     image: '/images/products/TKX00217.jpg',
+    category: 'ceramics',
+    dimensions: { width: 2, height: 1 },
+    rating: 4.7,
+    reviews: 32,
+    materials: 'Ceramic, non-toxic glazes',
   },
   {
     id: 3,
     name: 'Wooden Sculpture',
-    description: 'Carved from sustainable wood, depicting cultural symbols. This sculpture represents the rich heritage and craftsmanship of local woodworkers.',
+    description: 'Carved from sustainable wood with cultural symbols. This piece embodies the craft renaissance, combining organic forms with experimental textures.',
     price: 89.99,
     image: '/images/products/TKX00247.jpg',
+    category: 'woodwork',
+    dimensions: { width: 2, height: 1 },
+    rating: 4.9,
+    reviews: 28,
+    materials: 'Sustainable hardwood',
   },
   {
     id: 4,
     name: 'Embroidered Textile',
-    description: 'Vibrant patterns hand-stitched by artisans. Each textile tells a story through its intricate designs and color combinations.',
+    description: 'Vibrant, mismatched patterns hand-stitched by artisans. Tells a story through bold colors and inclusive designs, perfect for personalized spaces.',
     price: 34.99,
     image: '/images/products/textiles.jpg',
+    category: 'textiles',
+    dimensions: { width: 1, height: 2 },
+    rating: 4.6,
+    reviews: 56,
+    materials: 'Cotton, natural dyes',
   },
   {
     id: 5,
     name: 'Beaded Jewelry Set',
-    description: 'Colorful beads in traditional designs, includes necklace and earrings. Made with natural stones and traditional beading techniques.',
+    description: 'Colorful beads in expressive designs, including necklace and earrings. Made with natural stones and sustainable techniques for everyday luxury.',
     price: 29.99,
-    image: '/images/products/jewelry.jpg',
+    image: '/images/products/TKX00247.jpg',
+    category: 'jewelry',
+    dimensions: { width: 1, height: 1 },
+    rating: 4.5,
+    reviews: 67,
+    materials: 'Natural stones, metal alloys',
   },
   {
     id: 6,
     name: 'Pottery Bowl',
-    description: 'Wheel-thrown and glazed with earthy tones. Each bowl is unique with its own character and finish.',
+    description: 'Wheel-thrown with earthy tones and lo-fi textures. Unique character that aligns with new naturalism trends in sustainable homeware.',
     price: 24.99,
-    image: '/images/products/TKX00247.jpg',
+    image: '/images/products/jewelry.jpg',
+    category: 'pottery',
+    dimensions: { width: 3, height: 2 },
+    rating: 4.8,
+    reviews: 41,
+    materials: 'Clay, natural glazes',
   },
   {
     id: 7,
     name: 'Bamboo Lantern',
-    description: 'Eco-friendly lantern with intricate cutouts for ambient lighting. Creates beautiful patterns when lit.',
+    description: 'Eco-friendly with intricate cutouts for ambient lighting. Creates patterns that evoke \'70s revival with modern sustainable twists.',
     price: 39.99,
     image: '/images/products/TKX00319.jpg',
+    category: 'lighting',
+    dimensions: { width: 1, height: 1 },
+    rating: 4.7,
+    reviews: 39,
+    materials: 'Bamboo, LED compatible',
   },
-  {
-    id: 8,
-    name: 'Silk Scarf',
-    description: 'Hand-dyed silk with cultural prints, soft and luxurious. Lightweight and perfect for any occasion.',
-    price: 49.99,
-    image: '/images/products/TKX00247.jpg',
-  },
+
   {
     id: 9,
     name: 'Metal Wall Art',
-    description: 'Hammered metal piece inspired by ancient craftsmanship. Adds a touch of elegance to any wall.',
+    description: 'Hammered metal inspired by ancient craftsmanship with bold contrasts. Adds elegant, experimental flair to any wall.',
     price: 74.99,
     image: '/images/products/TKX00310.jpg',
+    category: 'metalwork',
+    dimensions: { width: 3, height: 2 },
+    rating: 4.6,
+    reviews: 34,
+    materials: 'Recycled metal',
   },
-  {
-    id: 10,
-    name: 'Leather Journal',
-    description: 'Hand-bound with embossed designs, ideal for writing or sketching. Features high-quality paper and durable binding.',
-    price: 32.99,
-    image: '/images/products/TKX00247.jpg',
-  },
+
   {
     id: 11,
     name: 'Stone Carving',
-    description: 'Detailed sculpture from natural stone, a timeless piece. Showcases the natural beauty of the material.',
+    description: 'Detailed sculpture from natural stone with timeless appeal. Showcases organic beauty and new naturalism in design.',
     price: 99.99,
     image: '/images/products/TKX09970.jpg',
+    category: 'stonework',
+    dimensions: { width: 1, height: 2 },
+    rating: 4.9,
+    reviews: 29,
+    materials: 'Natural stone',
   },
   {
     id: 12,
     name: 'Woven Rug',
-    description: 'Durable and colorful, hand-loomed from wool and cotton. Adds warmth and character to any room.',
+    description: 'Durable and colorful, hand-loomed from wool and cotton. Adds warmth with mismatched patterns and sustainable materials.',
     price: 129.99,
     image: '/images/products/woodwork.jpg',
+    category: 'home-decor',
+    dimensions: { width: 1, height: 2},
+    rating: 4.7,
+    reviews: 37,
+    materials: 'Wool, cotton',
   },
 ];
 
 const Gallery: React.FC = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [cart, setCart] = useState<Product[]>([]);
+      const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  const [wishlist, setWishlist] = useState<number[]>([]);
   const [isZoomed, setIsZoomed] = useState(false);
-  const [zoomScale, setZoomScale] = useState(1);
-  const [showDescription, setShowDescription] = useState(false);
-  const [quantity, setQuantity] = useState(1);
-  const [addedToCart, setAddedToCart] = useState(false);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const touchStartX = useRef(0);
-  const touchEndX = useRef(0);
+   // Scroll effect for header
+    useEffect(() => {
+      const handleScroll = () => {
+        setIsScrolled(window.scrollY > 50);
+      };
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+  
 
-  // Auto-play logic
-  useEffect(() => {
-    if (isPlaying) {
-      timerRef.current = setInterval(() => {
-        handleNext();
-      }, 3000);
-    }
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [isPlaying, currentIndex]);
-
-  const handlePlayPause = () => {
-    setIsPlaying(!isPlaying);
+  const toggleWishlist = (id: number) => {
+    setWishlist(prev => 
+      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    );
   };
 
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % products.length);
-    setZoomScale(1);
-    setShowDescription(false);
-    setQuantity(1);
-  };
-
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + products.length) % products.length);
-    setZoomScale(1);
-    setShowDescription(false);
-    setQuantity(1);
-  };
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    touchEndX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = () => {
-    if (touchStartX.current - touchEndX.current > 50) {
-      handleNext();
-    } else if (touchEndX.current - touchStartX.current > 50) {
-      handlePrev();
+  // Grid layout with different sizes based on dimensions
+  const getGridClass = (dimensions?: { width: number; height: number }) => {
+    const baseClasses = "relative overflow-hidden rounded-2xl cursor-pointer bg-gray-50";
+    const dims = dimensions || { width: 1, height: 1 };
+    
+    if (dims.width >= 3 && dims.height >= 2) {
+      return `${baseClasses} col-span-2 row-span-2 md:col-span-3 md:row-span-2`;
+    } else if (dims.width === 2 && dims.height === 3) {
+      return `${baseClasses} col-span-1 row-span-3`;
+    } else if (dims.width === 2 && dims.height === 2) {
+      return `${baseClasses} col-span-2 row-span-2`;
+    } else if (dims.height >= 2) {
+      return `${baseClasses} col-span-1 row-span-2`;
+    } else if (dims.width >= 2) {
+      return `${baseClasses} col-span-2 row-span-1`;
+    } else {
+      return `${baseClasses} col-span-1 row-span-1`;
     }
   };
-
-  const handleZoom = (e: React.WheelEvent | React.MouseEvent) => {
-    if (isZoomed) {
-      const delta = 'deltaY' in e ? -e.deltaY / 100 : 0;
-      setZoomScale((prev) => Math.min(Math.max(prev + delta, 1), 5));
-    }
-  };
-
-  const toggleZoomMode = () => {
-    setIsZoomed(!isZoomed);
-    setZoomScale(1);
-  };
-
-  const toggleDescription = () => {
-    setShowDescription(!showDescription);
-  };
-
-  const handleAddToCart = () => {
-    // Add to cart logic here
-    setAddedToCart(true);
-    setTimeout(() => setAddedToCart(false), 3000);
-  };
-
-  const increaseQuantity = () => {
-    setQuantity(prev => prev + 1);
-  };
-
-  const decreaseQuantity = () => {
-    setQuantity(prev => prev > 1 ? prev - 1 : 1);
-  };
-
-  const currentProduct = products[currentIndex];
 
   return (
-    <div className="min-h-screen bg-gray-100 overflow-hidden">
-      <Header />
-      <section className="py-16 relative">
-        {/* Clean Header */}
-        <div className="container mx-auto px-4 text-center mb-12">
-          <motion.h1
-            className={`${playfair.className} text-4xl md:text-6xl font-bold text-gray-800 mb-4`}
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            aria-label="Gallery Section Title"
-          >
-            Product Gallery
-          </motion.h1>
-          <motion.p
-            className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2 }}
-          >
-            Explore our collection of handcrafted art and craft products. Each item is made with care and quality materials.
-          </motion.p>
-        </div>
+    <div>
+       <Header cart={cart} isScrolled={isScrolled} />
+    <div className="min-h-screen bg-white py-12 px-4">
+      {/* Enhanced Header */}
 
-        {/* Main Layout: Viewer on left, Product list on right */}
-        <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Main Gallery Viewer (Left - 2/3 on md+) */}
+
+      {/* Asymmetrical Grid Layout */}
+      <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-6 max-w-7xl mx-auto auto-rows-[200px]">
+        {products.map((product) => (
           <motion.div
-            className="md:col-span-2 relative w-full h-[50vh] md:h-[70vh] overflow-hidden rounded-xl shadow-lg bg-white"
-            initial={{ opacity: 0, scale: 0.95 }}
+            key={product.id}
+            className={getGridClass(product.dimensions)}
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-            onWheel={handleZoom}
+            transition={{ duration: 0.5 }}
+            whileHover={{ scale: 1.02 }}
+            onClick={() => setSelectedProduct(product)}
           >
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={currentProduct.id}
-                src={currentProduct.image}
-                alt={currentProduct.name}
-                className={`absolute inset-0 w-full h-full object-cover transition-transform duration-300 ${isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'}`}
-                style={{ transform: `scale(${zoomScale})` }}
-                initial={{ opacity: 0, x: 100 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -100 }}
-                transition={{ duration: 0.6, ease: 'easeInOut' }}
-                onClick={toggleZoomMode}
-                loading="lazy"
+            {/* Product Image */}
+            <div className="relative w-full h-full group">
+              <Image
+                src={product.image}
+                alt={product.name}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-110"
+                sizes="(max-width: 768px) 100vw, 33vw"
               />
-            </AnimatePresence>
+              
+              {/* Overlay with Info */}
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex flex-col justify-between p-6">
+                {/* Top Actions */}
+                <div className="flex justify-between items-start opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleWishlist(product.id);
+                    }}
+                    className={`p-2 rounded-full backdrop-blur-sm ${
+                      wishlist.includes(product.id) 
+                        ? 'bg-red-500 text-white' 
+                        : 'bg-white/90 text-gray-700 hover:bg-white'
+                    }`}
+                  >
+                    <Heart 
+                      size={20} 
+                      fill={wishlist.includes(product.id) ? 'currentColor' : 'none'} 
+                    />
+                  </button>
+                  <span className="bg-white/90 backdrop-blur-sm text-gray-900 px-3 py-1 rounded-full text-sm font-medium">
+                    ${product.price.toFixed(2)}
+                  </span>
+                </div>
 
-            {/* Enhanced Product Info Overlay */}
+                {/* Bottom Info */}
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
+                  <h3 className="text-white font-semibold text-lg drop-shadow-lg">
+                    {product.name}
+                  </h3>
+                  <p className="text-white/90 text-sm drop-shadow-lg">
+                    {product.category}
+                  </p>
+                </div>
+              </div>
+
+              {/* Quick Action Bar */}
+              <div className="absolute bottom-4 left-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <button className="flex-1 bg-white text-gray-900 py-2 px-3 rounded-lg text-sm font-medium hover:bg-gray-100 transition-colors flex items-center justify-center gap-2">
+                  <ShoppingBag size={16} />
+                  Quick Add
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Enhanced Modal */}
+      <AnimatePresence>
+        {selectedProduct && (
+          <motion.div
+            className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => {
+              setSelectedProduct(null);
+              setIsZoomed(false);
+            }}
+          >
             <motion.div
-              className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4 md:p-6 text-white"
-              initial={{ y: 50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
+              className="bg-white rounded-3xl max-w-6xl w-full max-h-[90vh] overflow-hidden relative"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex flex-col gap-3">
-                <div>
-                  <h2 className="text-xl md:text-2xl font-bold mb-2">{currentProduct.name}</h2>
+              <div className="grid grid-cols-1 lg:grid-cols-2 h-full">
+                {/* Image Section */}
+                <div className="relative h-96 lg:h-full bg-gray-100">
+                  <Image
+                    src={selectedProduct.image}
+                    alt={selectedProduct.name}
+                    fill
+                    className={`object-contain transition-transform duration-300 ${
+                      isZoomed ? 'scale-150 cursor-zoom-out' : 'cursor-zoom-in'
+                    }`}
+                    onClick={() => setIsZoomed(!isZoomed)}
+                  />
                   
-                  {/* Collapsible Description */}
-                  <div className="mb-2">
-                    {showDescription ? (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="overflow-hidden"
-                      >
-                        <p className="text-gray-200 text-sm leading-relaxed mb-2">
-                          {currentProduct.description}
-                        </p>
-                        <button
-                          onClick={toggleDescription}
-                          className="text-blue-300 hover:text-blue-100 text-sm font-medium transition-colors"
-                        >
-                          Show Less
-                        </button>
-                      </motion.div>
-                    ) : (
-                      <div className="flex items-start gap-2">
-                        <p className="text-gray-200 text-sm line-clamp-2 flex-1">
-                          {currentProduct.description.substring(0, 80)}...
-                        </p>
-                        <button
-                          onClick={toggleDescription}
-                          className="text-blue-300 hover:text-blue-100 text-sm font-medium whitespace-nowrap transition-colors"
-                        >
-                          Read More
-                        </button>
-                      </div>
-                    )}
+                  {/* Image Controls */}
+                  <div className="absolute top-4 right-4 flex gap-2">
+                    <button
+                      onClick={() => setIsZoomed(!isZoomed)}
+                      className="bg-white/90 backdrop-blur-sm p-2 rounded-full hover:bg-white transition-colors"
+                    >
+                      <ZoomIn size={20} />
+                    </button>
+                    <button
+                      onClick={() => toggleWishlist(selectedProduct.id)}
+                      className={`p-2 rounded-full backdrop-blur-sm ${
+                        wishlist.includes(selectedProduct.id) 
+                          ? 'bg-red-500 text-white' 
+                          : 'bg-white/90 text-gray-700 hover:bg-white'
+                      }`}
+                    >
+                      <Heart 
+                        size={20} 
+                        fill={wishlist.includes(selectedProduct.id) ? 'currentColor' : 'none'} 
+                      />
+                    </button>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <span className="text-xl font-bold text-white">${currentProduct.price.toFixed(2)}</span>
-                    
-                    {/* Quantity Selector */}
-                    <div className="flex items-center gap-2 bg-white/20 rounded-lg px-3 py-1">
-                      <button
-                        onClick={decreaseQuantity}
-                        className="text-white hover:bg-white/20 rounded-full p-1 transition-colors"
-                        aria-label="Decrease quantity"
-                      >
-                        <Minus size={14} />
-                      </button>
-                      <span className="text-white font-semibold min-w-[20px] text-center text-sm">{quantity}</span>
-                      <button
-                        onClick={increaseQuantity}
-                        className="text-white hover:bg-white/20 rounded-full p-1 transition-colors"
-                        aria-label="Increase quantity"
-                      >
-                        <Plus size={14} />
+                {/* Product Info Section */}
+                <div className="p-8 lg:p-12 flex flex-col h-full overflow-y-auto">
+                  <button
+                    onClick={() => {
+                      setSelectedProduct(null);
+                      setIsZoomed(false);
+                    }}
+                    className="absolute top-4 right-4 lg:top-6 lg:right-6 text-gray-500 hover:text-gray-700 p-2 z-10"
+                  >
+                    <X size={24} />
+                  </button>
+
+                  <div className="flex-1">
+                    <div className="mb-6">
+                      <span className="text-sm text-gray-500 uppercase tracking-wider">
+                        {selectedProduct.category}
+                      </span>
+                      <h2 className={`${playfair.className} text-4xl font-bold text-gray-900 mt-2 mb-4`}>
+                        {selectedProduct.name}
+                      </h2>
+                      <p className="text-2xl font-bold text-gray-900 mb-2">
+                        ${selectedProduct.price.toFixed(2)}
+                      </p>
+                      <div className="flex items-center gap-2 mb-6">
+                        <div className="flex text-yellow-400">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Star
+                              key={i}
+                              size={16}
+                              fill={i < Math.floor(selectedProduct.rating) ? 'currentColor' : 'none'}
+                              stroke="currentColor"
+                            />
+                          ))}
+                        </div>
+                        <span className="text-sm text-gray-600">
+                          {selectedProduct.rating} ({selectedProduct.reviews} reviews)
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="mb-8">
+                      <h3 className="font-semibold text-gray-900 mb-3">Description</h3>
+                      <p className="text-gray-600 leading-relaxed">
+                        {selectedProduct.description}
+                      </p>
+                    </div>
+
+                    {selectedProduct.materials && (
+                      <div className="mb-8">
+                        <h3 className="font-semibold text-gray-900 mb-3">Materials</h3>
+                        <p className="text-gray-600 leading-relaxed">
+                          {selectedProduct.materials}
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="space-y-4">
+                      <div className="flex gap-3">
+                        <button className="flex-1 bg-gray-900 text-white py-4 px-6 rounded-xl font-semibold hover:bg-gray-800 transition-colors flex items-center justify-center gap-3">
+                          <ShoppingBag size={20} />
+                          Add to Cart
+                        </button>
+                        <button className="p-4 border border-gray-300 rounded-xl hover:border-gray-400 transition-colors">
+                          <Share2 size={20} />
+                        </button>
+                      </div>
+                      
+                      <button className="w-full border border-gray-900 text-gray-900 py-4 px-6 rounded-xl font-semibold hover:bg-gray-50 transition-colors">
+                        Buy Now
                       </button>
                     </div>
                   </div>
 
-                  {/* Add to Cart Button */}
-                  <motion.button
-                    onClick={handleAddToCart}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all text-sm ${
-                      addedToCart 
-                        ? 'bg-green-600 hover:bg-green-700' 
-                        : 'bg-blue-600 hover:bg-blue-700'
-                    } text-white shadow-lg`}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    disabled={addedToCart}
-                  >
-                    <ShoppingCart size={16} />
-                    {addedToCart ? 'Added!' : `Add - $${(currentProduct.price * quantity).toFixed(2)}`}
-                  </motion.button>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Controls */}
-            <div className="absolute top-4 right-4 flex gap-2">
-              <button
-                onClick={handlePlayPause}
-                className="bg-gray-800/50 hover:bg-gray-800/70 text-white p-2 rounded-full transition-all backdrop-blur-sm"
-                aria-label={isPlaying ? 'Pause Slideshow' : 'Play Slideshow'}
-              >
-                {isPlaying ? <Pause size={16} /> : <Play size={16} />}
-              </button>
-              <button
-                onClick={toggleZoomMode}
-                className="bg-gray-800/50 hover:bg-gray-800/70 text-white p-2 rounded-full transition-all backdrop-blur-sm"
-                aria-label={isZoomed ? 'Zoom Out' : 'Zoom In'}
-              >
-                <ZoomIn size={16} />
-              </button>
-            </div>
-
-            <button
-              onClick={handlePrev}
-              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-800/50 hover:bg-gray-800/70 text-white p-2 rounded-full transition-all backdrop-blur-sm"
-              aria-label="Previous Product"
-            >
-              <ChevronLeft size={20} />
-            </button>
-            <button
-              onClick={handleNext}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-800/50 hover:bg-gray-800/70 text-white p-2 rounded-full transition-all backdrop-blur-sm"
-              aria-label="Next Product"
-            >
-              <ChevronRight size={20} />
-            </button>
-          </motion.div>
-
-          {/* Product List (Right - 1/3 on md+, below on mobile) */}
-          <div className="md:col-span-1 overflow-y-auto max-h-[70vh] space-y-3 pr-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
-            {products.map((product, index) => (
-              <motion.div
-                key={product.id}
-                className={`flex items-center bg-white rounded-lg shadow-md p-3 cursor-pointer transition-all ${
-                  index === currentIndex 
-                    ? 'border-2 border-blue-500 ring-2 ring-blue-200' 
-                    : 'hover:shadow-lg'
-                }`}
-                onClick={() => {
-                  setCurrentIndex(index);
-                  setShowDescription(false);
-                  setQuantity(1);
-                }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-16 h-16 object-cover rounded-md mr-3 flex-shrink-0"
-                  loading="lazy"
-                />
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-base font-semibold text-gray-800 truncate">{product.name}</h3>
-                  <p className="text-sm text-gray-600 truncate mb-1">{product.description}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-md font-bold text-gray-700">${product.price.toFixed(2)}</span>
-                    {index === currentIndex && (
-                      <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                    )}
+                  {/* Additional Info */}
+                  <div className="mt-8 pt-8 border-t border-gray-200">
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <span className="text-gray-500">Free Shipping</span>
+                        <p className="font-medium">On orders over $50</p>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">Returns</span>
+                        <p className="font-medium">30-day guarantee</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* Success Message */}
-        <AnimatePresence>
-          {addedToCart && (
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 50 }}
-              className="fixed bottom-8 right-8 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 z-50"
-            >
-              <div className="bg-green-600 rounded-full p-1">
-                <ShoppingCart size={20} />
               </div>
-              <div>
-                <p className="font-semibold">Successfully added to cart!</p>
-                <p className="text-sm opacity-90">{quantity} x {currentProduct.name}</p>
-              </div>
-              <button
-                onClick={() => setAddedToCart(false)}
-                className="text-white hover:text-gray-200 transition-colors"
-              >
-                <X size={20} />
-              </button>
             </motion.div>
-          )}
-        </AnimatePresence>
-      </section>
-      <Footer />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+    <Footer />
     </div>
   );
 };

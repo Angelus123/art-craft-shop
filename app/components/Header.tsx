@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation'; // Import usePathname
+import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 import { Inter, Playfair_Display } from 'next/font/google';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -44,21 +45,26 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
 
   return (
     <header
-      className={`fixed w-full z-30 transition-all duration-300 ${
-        isScrolled ? 'bg-amber-900 shadow-md py-2' : 'bg-white py-4'
-      }`}
+      className={`fixed w-full z-30 transition-all duration-300 ${isScrolled ? 'bg-amber-900 shadow-md py-2' : 'bg-white py-4'
+        }`}
       role="banner"
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
         {/* Logo */}
         <Link
           href="/"
-          className={`${playfair.className} text-2xl md:text-3xl font-bold transition-colors ${
-            isScrolled ? 'text-white' : 'text-amber-900'
-          } hover:text-amber-700`}
+          className="transition-colors"
           aria-label="Artisan Crafts Home"
         >
-          Insight Art Space
+          <Image
+            src="/images/logo/logo.png"
+            alt="Insight Art Space Logo"
+            width={20} // Reduced from 80
+            height={20} // 60 ÷ (80/26) = 19.5
+            className={`transition-opacity rounded-full ${isScrolled ? 'opacity-90' : 'opacity-100'
+              } hover:opacity-80`}
+            priority
+          />
         </Link>
 
         {/* Desktop Navigation */}
@@ -67,15 +73,14 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
             <Link
               key={link.href}
               href={link.href}
-              className={`text-base transition-colors font-bold ${
-                pathname === link.href
+              className={`text-base transition-colors font-bold ${pathname === link.href
                   ? isScrolled
                     ? 'text-white underline underline-offset-4'
                     : 'text-amber-700 underline underline-offset-4'
                   : isScrolled
-                  ? 'text-amber-100 hover:text-white focus:text-white'
-                  : 'text-amber-900 hover:text-amber-700 focus:text-amber-700'
-              } focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 rounded`}
+                    ? 'text-amber-100 hover:text-white focus:text-white'
+                    : 'text-amber-900 hover:text-amber-700 focus:text-amber-700'
+                } focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 rounded`}
             >
               {link.label}
             </Link>
@@ -109,9 +114,8 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
         <div className="flex items-center space-x-4">
           {/* Search Button */}
           <button
-            className={`p-2 rounded-full transition-colors ${
-              isScrolled ? 'bg-amber-800 text-white' : 'bg-white/20 text-amber-900'
-            } hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500`}
+            className={`p-2 rounded-full transition-colors ${isScrolled ? 'bg-amber-800 text-white' : 'bg-white/20 text-amber-900'
+              } hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500`}
             aria-label="Search products"
           >
             <svg
@@ -131,9 +135,8 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
           {/* Cart Button */}
           <div className="relative">
             <button
-              className={`p-2 rounded-full transition-colors ${
-                isScrolled ? 'bg-amber-800 text-white' : 'bg-white/20 text-amber-900'
-              } hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500`}
+              className={`p-2 rounded-full transition-colors ${isScrolled ? 'bg-amber-800 text-white' : 'bg-white/20 text-amber-900'
+                } hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500`}
               aria-label={`Shopping cart with ${cart.length} items`}
             >
               <svg
@@ -156,27 +159,24 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-          isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-        }`}
+        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          }`}
       >
         <nav
-          className={`flex flex-col space-y-4 bg-amber-900/95 p-4 ${
-            isScrolled ? 'text-amber-900' : 'text-amber-900'
-          }`}
+          className={`flex flex-col space-y-4 bg-amber-900/95 p-4 ${isScrolled ? 'text-amber-900' : 'text-amber-900'
+            }`}
           aria-label="Mobile navigation"
         >
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`font-medium text-base transition-colors ${
-                pathname === link.href
+              className={`font-medium text-base transition-colors ${pathname === link.href
                   ? 'text-white underline underline-offset-4'
                   : isScrolled
-                  ? 'text-amber-100 hover:text-white focus:text-white'
-                  : 'text-amber-100 hover:text-amber-700 focus:text-amber-700'
-              } focus:outline-none focus:ring-2 focus:ring-amber-500 rounded`}
+                    ? 'text-amber-100 hover:text-white focus:text-white'
+                    : 'text-amber-100 hover:text-amber-700 focus:text-amber-700'
+                } focus:outline-none focus:ring-2 focus:ring-amber-500 rounded`}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {link.label}

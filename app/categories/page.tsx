@@ -1,128 +1,199 @@
-// app/categories/page.tsx
-'use client'; // Required for client-side rendering in Next.js App Router
-
-import React from 'react';
-import { motion } from 'framer-motion';
+'use client';
+import React, { useState, useRef, useEffect, createContext, useContext } from 'react';
 import Link from 'next/link';
-import { Playfair_Display } from 'next/font/google';
+import { Inter, Playfair_Display } from 'next/font/google';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-// Import the font
+const inter = Inter({ subsets: ['latin'] });
 const playfair = Playfair_Display({ subsets: ['latin'], weight: ['400', '700'] });
 
-// Sample category data (expandable; grouped from products)
 const categories = [
   {
-    id: 1,
-    name: 'Textiles & Fabrics',
-    description: 'Handwoven and embroidered pieces that blend tradition with artistry.',
-    image: '/images/categories/textiles.jpg',
-    link: '/shop?category=textiles',
-  },
-  {
-    id: 2,
-    name: 'Pottery & Ceramics',
-    description: 'Wheel-thrown and hand-painted items for functional and decorative use.',
-    image: '/images/categories/ceramic-vase.jpg', 
-    link: '/shop?category=ceramics',
-  },
-  {
-    id: 3,
-    name: 'Woodwork & Sculptures',
-    description: 'Carved masterpieces from sustainable woods, capturing cultural essence.',
-    image: '/images/categories/woodwork.jpg',
-    link: '/shop?category=woodwork',
-  },
-  {
-    id: 4,
-    name: 'Jewelry & Accessories',
-    description: 'Beaded and crafted adornments inspired by heritage designs.',
+    name: 'jewelry',
+    displayName: 'Jewelry',
+    description: 'Exquisite handmade jewelry with traditional designs',
     image: '/images/categories/jewelry.jpg',
-    link: '/shop?category=jewelry',
+    icon: '💍',
+    productCount: 4
   },
   {
-    id: 5,
-    name: 'Home Decor',
-    description: 'Artisanal items to enhance your living spaces with cultural flair.',
-    image: '/images/categories/home-decor.jpg', // e.g., from Bamboo Lantern or Metal Wall Art
-    link: '/shop?category=home-decor',
+    name: 'home-decor',
+    displayName: 'Home Decor',
+    description: 'Beautiful handcrafted items for your living space',
+    image: '/images/categories/home-decor.jpg',
+    icon: '🏺',
+    productCount: 2
   },
   {
-    id: 6,
-    name: 'Sculptures & Carvings',
-    description: 'Detailed stone and metal works that tell stories through form.',
-    image: '/images/categories/sculptures.jpg', // e.g., from Stone Carving or Metal Wall Art
-    link: '/shop?category=sculptures',
+    name: 'ceramics',
+    displayName: 'Ceramics',
+    description: 'Handcrafted pottery and ceramic art pieces',
+    image: '/images/categories/ceramics.jpg',
+    icon: '🍶',
+    productCount: 2
   },
-  // Add more categories as needed
+  {
+    name: 'textiles',
+    displayName: 'Textiles',
+    description: 'Woven and embroidered fabrics with traditional patterns',
+    image: '/images/categories/textiles.jpg',
+    icon: '🧵',
+    productCount: 2
+  },
+  {
+    name: 'woodwork',
+    displayName: 'Woodwork',
+    description: 'Exquisite wooden sculptures and functional items',
+    image: '/images/categories/woodwork.jpg',
+    icon: '🪵',
+    productCount: 1
+  },
+  {
+    name: 'fashion',
+    displayName: 'Fashion',
+    description: 'Traditional and contemporary fashion accessories',
+    image: '/images/categories/fashion.jpg',
+    icon: '👘',
+    productCount: 1
+  }
 ];
 
-const Categories: React.FC = () => {
-  return (
-    <div>
-      <Header />
-      <section className="min-h-screen bg-amber-50 py-16">
-        {/* Header tying back to Hero and Shop style */}
-        <div className="container mx-auto px-4 text-center mb-12">
-          <motion.h1
-            className={`${playfair.className} text-4xl md:text-6xl font-bold text-amber-800 mb-4`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            aria-label="Categories Section Title"
-          >
-            Our Categories
-          </motion.h1>
-          <motion.p
-            className="text-lg md:text-xl text-amber-700 max-w-2xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2 }}
-          >
-            Explore our curated categories of traditional art and crafts. Each collection showcases unique handmade treasures preserving cultural heritage.
-          </motion.p>
-        </div>
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+  category: string;
+  description: string;
+}
 
-        {/* Category Grid */}
-        <div className="container mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8">
-          {categories.map((category, index) => (
-            <motion.div
-              key={category.id}
-              className="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105"
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -5 }}
-              role="article"
-              aria-label={`Category: ${category.name}`}
-            >
-              <img
-                src={category.image}
-                alt={category.name}
-                className="w-full h-64 object-cover"
-                loading="lazy"
-              />
-              <div className="p-6">
-                <h2 className="text-xl font-semibold text-amber-800 mb-2">{category.name}</h2>
-                <p className="text-amber-600 mb-4">{category.description}</p>
-                <div className="flex justify-center">
-                  <Link
-                    href={category.link}
-                    className="bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 px-6 rounded-full transition duration-300"
-                    aria-label={`Explore ${category.name}`}
-                  >
-                    Explore
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-      <Footer />
-    </div>
+// Cart Context for better state management
+interface CartItem {
+  product: Product;
+  quantity: number;
+}
+
+interface CartContextType {
+  cart: CartItem[];
+  addToCart: (product: Product, quantity: number) => void;
+  removeFromCart: (id: number) => void;
+}
+
+const CartContext = createContext<CartContextType | undefined>(undefined);
+
+export const useCart = () => {
+  const context = useContext(CartContext);
+  if (!context) throw new Error('useCart must be used within CartProvider');
+  return context;
+};
+const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [cart, setCart] = useState<CartItem[]>([]);
+
+  const addToCart = (product: Product, qty: number) => {
+    setCart((prev) => {
+      const existing = prev.find((item) => item.product.id === product.id);
+      if (existing) {
+        return prev.map((item) =>
+          item.product.id === product.id ? { ...item, quantity: item.quantity + qty } : item
+        );
+      }
+      return [...prev, { product, quantity: qty }];
+    });
+  };
+
+  const removeFromCart = (id: number) => {
+    setCart((prev) => prev.filter((item) => item.product.id !== id));
+  };
+
+  return (
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+      {children}
+    </CartContext.Provider>
   );
 };
 
-export default Categories;
+
+
+const Categories: React.FC = () => {
+
+ const [cart, setCart] = useState<Product[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [zoomScale, setZoomScale] = useState(1);
+  const [showDescription, setShowDescription] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+  const [addedToCart, setAddedToCart] = useState(false);
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [wishlist, setWishlist] = useState<number[]>([]);
+  const [showShareModal, setShowShareModal] = useState(false);
+
+  // Scroll effect for header
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <div>
+      <Header cart={cart} isScrolled={isScrolled} />
+      <div className={`${inter.className} min-h-screen bg-gray-50 py-20`}>
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h1 className={`${playfair.className} text-2xl md:text-2xl font-bold text-gray-900 mb-4`}>
+              SHOP BY CATEGORY
+            </h1>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+              Discover our carefully curated collections of handcrafted products, each category representing
+              unique traditional crafts and artisan skills.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {categories.map((category) => (
+              <Link
+                key={category.name}
+                href={`/categories/${category.name}`}
+                className="group bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
+              >
+                <div className="aspect-video relative overflow-hidden">
+                  <div
+                    className="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                    style={{ backgroundImage: `url(${category.image})` }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                  <div className="absolute top-4 right-4">
+                    <span className="bg-white text-amber-600 px-3 py-1 rounded-full text-sm font-semibold">
+                      {category.productCount} items
+                    </span>
+                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <div className="flex items-center space-x-3 mb-2">
+                      <span className="text-2xl">{category.icon}</span>
+                      <h3 className="text-2xl font-semibold">{category.displayName}</h3>
+                    </div>
+                    <p className="text-amber-100 text-sm">{category.description}</p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
+}
+
+const WrappedCategories = () => (
+  <CartProvider>
+    <Categories />
+  </CartProvider>
+);
+
+export default WrappedCategories;

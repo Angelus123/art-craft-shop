@@ -6,9 +6,19 @@ import Link from 'next/link';
 import { Playfair_Display } from 'next/font/google';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { useState, useEffect } from 'react';
 
 // Import the font
 const playfair = Playfair_Display({ subsets: ['latin'], weight: ['400', '700'] });
+// Define interfaces for data structures
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+  category: string;
+  description: string;
+}
 
 // Default placeholder image for missing artisan images
 const placeholderImage = '/images/placeholders/human-silhouette.jpg'; // Path to a human silhouette placeholder
@@ -67,9 +77,21 @@ const artisans = [
 ];
 
 const Artisans: React.FC = () => {
+   const [cart, setCart] = useState<Product[]>([]);
+    const [isScrolled, setIsScrolled] = useState<boolean>(false);
+
+   // Add scroll effect for header
+    useEffect(() => {
+      const handleScroll = () => {
+        setIsScrolled(window.scrollY > 50);
+      };
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
   return (
     <div>
-      <Header />
+      {/* Sticky Header */}
+      <Header cart={cart} isScrolled={isScrolled} />
       <section className="min-h-screen bg-amber-50 py-16">
         {/* Header tying back to Hero, Shop, and Categories style */}
         <div className="container mx-auto px-4 text-center mb-12">

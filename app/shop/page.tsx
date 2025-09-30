@@ -8,6 +8,14 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { ChevronLeft, ChevronRight, ZoomIn, Play, Pause, Plus, Minus, ShoppingCart, X, Star, StarHalf, Maximize } from 'lucide-react';
 
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+  category: string;
+  description: string;
+}
 const playfair = Playfair_Display({ subsets: ['latin'], weight: ['400', '700'] });
 
 const initialProducts = [
@@ -124,6 +132,8 @@ const Shop: React.FC = () => {
       stock: Math.floor(Math.random() * 450) + 50,
     }))
   );
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  const [cart, setCart] = useState<Product[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
@@ -147,6 +157,14 @@ const Shop: React.FC = () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
   }, [isPlaying, currentIndex]);
+   // Add scroll effect for header
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
@@ -227,7 +245,7 @@ const Shop: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 overflow-hidden">
-      <Header />
+      <Header cart={cart} isScrolled={isScrolled} />
       <section className="py-16 relative">
         {/* Clean Header */}
         <div className="container mx-auto px-4 text-center mb-12">
