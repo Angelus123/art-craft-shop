@@ -4,6 +4,12 @@ export async function getProducts() {
   return prisma.product.findMany();
 }
 
+export async function getProductById(id: string) {
+  return prisma.product.findUnique({
+    where: { id },
+  });
+}
+
 export async function createProduct(data: any) {
   return prisma.product.create({ data });
 }
