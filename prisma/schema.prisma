@@ -1,4 +1,3 @@
-// prisma/schema.prisma
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,35 +7,53 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Product {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  description String
-  price       Float
-  images      String[]
-  category    String
-  inventory   Int
-  featured    Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model User {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  email           String   @unique
+  firstName       String?
+  lastName        String?
+  password        String   @default("")
+  profileImageUrl String?
+  role            Role     @default(CLIENT)
+  isVerified      Boolean  @default(false)
+  lastLoginAt     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
 
-  @@index([category])
+model Product {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  price       Float
+  image       String
+  category    String
+  description String
+  dimensions  Dimensions?
+  materials   String?
+  rating      Float      @default(0)
+  reviews     Int        @default(0)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
 
 model Category {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String   @unique
-  description String?
-  products    Product[]
-  createdAt   DateTime @default(now())
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  name         String   @unique
+  displayName  String
+  description  String
+  image        String
+  icon         String
+  productCount Int      @default(0)
 }
 
-model Order {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  items       Json
-  total       Float
-  customer    Json
-  status      String   @default("pending")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+type Dimensions {
+  width  Float
+  height Float
+}
+
+enum Role {
+  ADMIN
+  CLIENT
+  MANAGER
+  OPERATOR
 }
