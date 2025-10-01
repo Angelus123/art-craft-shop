@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
+const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey123";
 
 export async function GET() {
   return NextResponse.json({
@@ -15,21 +15,36 @@ export async function POST(req: Request) {
   try {
     const { email, password } = await req.json();
 
-    const user = await prisma.user.findUnique({ where: { email } });
+    if (!email || !password) {
+      return NextResponse.json(
+        { error: "Email and password are required" },
+        { status: 400 }
+      );
+    }
+
+    // Use findFirst instead of findUnique until index is fixed in Mongo
+    const user = await prisma.user.findFirst({
+      where: { email: email.trim().toLowerCase() },
+    });
+    console.log("User found:", user);
+
     if (!user) {
       return NextResponse.json({ error: "Invalid email or password" }, { status: 400 });
     }
-
+console.log("Verifying password for user:", password, "password:", user.password);
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return NextResponse.json({ error: "Invalid email or password" }, { status: 400 });
     }
+    console.log("Password is valid:", isPasswordValid);
 
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
       JWT_SECRET,
       { expiresIn: "1h" }
     );
+
+    console.log("Generated JWT:", token);
 
     return NextResponse.json({
       message: "Login successful ✅",
@@ -42,6 +57,7 @@ export async function POST(req: Request) {
       },
     });
   } catch (err) {
-    return NextResponse.json({ error: err }, { status: 500 });
+    console.error("Login API error:", err);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
