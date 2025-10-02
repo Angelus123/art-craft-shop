@@ -49,7 +49,7 @@ export default function Header({ theme, setTheme}: HeaderProps) {
                   href="/auditDashboard" 
                   className={`px-3 py-2 rounded-md text-lg font-medium `}
                 >
-                  Welcome {user?.name || 'Editor'}
+                  Welcome {user?.name || 'Admin'}
                 </Link>
               
               </div>
@@ -71,7 +71,7 @@ export default function Header({ theme, setTheme}: HeaderProps) {
                     className="flex items-center text-sm rounded-md bg-white/10 text-white px-3 py-2 hover:bg-white/20"
                   >
                     <span className="mr-2">👤</span>
-                    Editor
+                    Admin
                     <span className="ml-1">▼</span>
                   </button>
                 </div>
