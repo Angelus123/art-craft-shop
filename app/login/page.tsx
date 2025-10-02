@@ -105,17 +105,17 @@ export default function LoginPage() {
           >
             <div className="relative w-full max-w-md">
               {/* Abstract Art Illustration */}
-              <div className="absolute -top-8 -left-8 w-32 h-32 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full opacity-20 blur-xl"></div>
-              <div className="absolute -bottom-8 -right-8 w-40 h-40 bg-gradient-to-tr from-purple-400 to-pink-500 rounded-full opacity-20 blur-xl"></div>
+              <div className="absolute -top-8 -left-8 w-32 h-32 bg-gradient-to-br from-amber-400 to-orange-500 opacity-20 blur-xl"></div>
+              <div className="absolute -bottom-8 -right-8 w-40 h-40 bg-gradient-to-tr from-purple-400 to-pink-500 opacity-20 blur-xl"></div>
               
-              <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl p-12 shadow-2xl border border-white/50">
+              <div className="relative bg-white/80 backdrop-blur-sm p-12 shadow-2xl border border-white/50">
                 <div className="w-20 h-20 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg">
                   <span className="text-2xl">🎨</span>
                 </div>
                 <h2 className={`${playfair.className} text-4xl font-bold text-gray-900 mb-4`}>
                   Welcome to <span className="text-amber-600">Insight Art Space</span>
                 </h2>
-                <p className="text-gray-600 text-lg leading-relaxed mb-6">
+                {/* <p className="text-gray-600 text-lg leading-relaxed mb-6">
                   Discover curated art collections, connect with artists, and bring creativity into your space.
                 </p>
                 <div className="flex justify-center space-x-4 text-sm text-gray-500">
@@ -127,7 +127,7 @@ export default function LoginPage() {
                     <div className="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
                     Artist Community
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </motion.div>
@@ -139,21 +139,21 @@ export default function LoginPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="flex justify-center lg:justify-start"
           >
-            <div className="w-full max-w-md bg-white/90 backdrop-blur-sm shadow-2xl rounded-3xl p-8 lg:p-10 border border-white/50">
+            <div className="w-full max-w-md bg-white/90 backdrop-blur-sm shadow-2xl rounded-3xl p-2 lg:px-10 border border-white/50">
               {/* Header */}
               <div className="text-center mb-8">
                 <div className="w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg">
                   <span className="text-2xl text-white">👋</span>
                 </div>
-                <h1 className={`${playfair.className} text-3xl lg:text-4xl font-bold text-gray-900 mb-2`}>
-                  Welcome Back
+                <h1 className={`${playfair.className} text-3xl lg:text-2xl font-bold text-gray-900 mb-1`}>
+                  Login
                 </h1>
-                <p className="text-gray-600 text-sm lg:text-base">
+                {/* <p className="text-gray-600 text-sm lg:text-base">
                   Sign in to continue your artistic journey
-                </p>
+                </p> */}
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-1">
                 {/* Email Field */}
                 <div className="space-y-2">
                   <label className="block text-sm font-semibold text-gray-700">Email Address</label>
@@ -185,7 +185,7 @@ export default function LoginPage() {
                 </div>
 
                 {/* Password Field */}
-                <div className="space-y-2">
+                <div className="space-y-1">
                   <label className="block text-sm font-semibold text-gray-700">Password</label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -238,7 +238,7 @@ export default function LoginPage() {
                       initial={{ opacity: 0, y: -10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                      className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl text-sm flex items-center shadow-sm"
+                      className="bg-red-50 border border-red-200 text-red-700 p-2 rounded-xl text-sm flex items-center shadow-sm"
                     >
                       <span className="mr-2">❌</span>
                       {error.message}
@@ -252,7 +252,7 @@ export default function LoginPage() {
                   disabled={isLoading}
                   whileHover={{ scale: isLoading ? 1 : 1.02 }}
                   whileTap={{ scale: isLoading ? 1 : 0.98 }}
-                  className="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-semibold py-4 rounded-xl shadow-lg transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center"
+                  className="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-semibold py-2 rounded-xl shadow-lg transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center"
                 >
                   {isLoading ? (
                     <>
@@ -272,28 +272,28 @@ export default function LoginPage() {
                     <div className="w-full border-t border-gray-200"></div>
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-4 bg-white/90 text-gray-500">New to Insight Art Space?</span>
+                    <span className="px-4 bg-white/90 text-gray-500">Insight Art Space</span>
                   </div>
                 </div>
-                <Link 
+                {/* <Link 
                   href="/signup" 
                   className="inline-block mt-4 px-6 py-3 border-2 border-gray-200 text-gray-700 hover:border-amber-500 hover:text-amber-600 font-medium rounded-xl transition-all duration-200 hover:shadow-md"
                 >
                   Create your account
-                </Link>
+                </Link> */}
               </div>
 
               {/* Social Login (Optional) */}
               <div className="mt-8">
-                <div className="relative">
+                {/* <div className="relative">
                   <div className="absolute inset-0 flex items-center">
                     <div className="w-full border-t border-gray-200"></div>
                   </div>
                   <div className="relative flex justify-center text-sm">
                     <span className="px-4 bg-white/90 text-gray-500">Or continue with</span>
                   </div>
-                </div>
-                <div className="mt-4 grid grid-cols-2 gap-3">
+                </div> */}
+                {/* <div className="mt-4 grid grid-cols-2 gap-3">
                   <button
                     type="button"
                     className="flex items-center justify-center px-4 py-3 border border-gray-200 rounded-xl hover:border-gray-300 hover:shadow-sm transition-all duration-200"
@@ -308,7 +308,7 @@ export default function LoginPage() {
                     <span className="mr-2">⚫</span>
                     <span className="text-sm font-medium">GitHub</span>
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
           </motion.div>
