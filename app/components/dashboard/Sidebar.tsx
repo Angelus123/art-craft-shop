@@ -64,7 +64,7 @@ export default function Sidebar({ theme, themeStyles, activeTab, onTabChange }: 
         {!collapsed && (
           <h2 className={`text-lg font-semibold ${themeStyles.textColor} flex items-center gap-2`}>
             <FaStore className="text-amber-500" />
-            Gallery Manager
+            Admin Panel
           </h2>
         )}
         <button
