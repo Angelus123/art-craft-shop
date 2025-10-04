@@ -28,9 +28,11 @@ import Sidebar, { MenuItem } from "../components/dashboard/Sidebar";
 // Import different dashboard components
 import DashboardOverview from "../components/dashboard/DashboardOverview";
 import OrdersManagement from "../components/dashboard/OrdersManagement";
+import CategoriesDashboard from "../components/dashboard/CategoriesDashboard";
 import ArtworksManagement from "../components/dashboard/ArtworksManagement";
 import CollectionsManagement from "../components/dashboard/CollectionsManagement";
 import AnalyticsDashboard from "../components/dashboard/AnalyticsDashboard";
+import ComingSoon from "../components/dashboard/ComingSoon";
 
 function DashboardContent() {
   const { theme, setTheme } = useTheme();
@@ -98,10 +100,10 @@ function DashboardContent() {
       artworks: <ArtworksManagement  themeStyles={themeStyles} />,
       collections: <CollectionsManagement  themeStyles={themeStyles} />,
       analytics: <AnalyticsDashboard  themeStyles={themeStyles} />,
-      categories: <div>Categories Management - Coming Soon</div>,
-      exhibitions: <div>Exhibitions Management - Coming Soon</div>,
-      notifications: <div>Notifications - Coming Soon</div>,
-      settings: <div>Settings - Coming Soon</div>,
+      categories: <CategoriesDashboard  themeStyles={themeStyles} />,
+      exhibitions: <ComingSoon />,
+      notifications: <ComingSoon />,
+      settings: <ComingSoon />,
     };
 
     return tabComponents[activeTab as keyof typeof tabComponents] || tabComponents.dashboard;

@@ -19,7 +19,7 @@ export default function ProtectedRoute({ children, allowedRoles }: ProtectedRout
     if (!isLoading) {
       if (!isAuthenticated) {
         // If not authenticated, redirect to login
-        // router.push('/login');
+        router.push('/login');
       } else if (allowedRoles && user?.role && !allowedRoles.includes(user.role)) {
         // If user doesn't have the required role, redirect to their dashboard or show unauthorized
         switch (user.role) {
