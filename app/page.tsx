@@ -212,12 +212,12 @@ export default function Home() {
       {/* Quick Category Navigation */}
       <section className="py-8 bg-white border-b">
         <div className="container mx-auto px-4">
-          <div className="flex justify-center space-x-8 py-2 hide-scrollbar">
+          <div className="flex justify-center overflow-x-auto space-x-4 py-2 hide-scrollbar">
             {categories.map((category) => (
               <button
                 key={category.name}
                 onClick={() => setSelectedCategory(category.name)}
-                className={`flex flex-col items-center min-w-20 group ${selectedCategory === category.name ? 'text-amber-600' : 'text-gray-600'
+                className={`flex flex-col items-center min-w-[80px] group ${selectedCategory === category.name ? 'text-amber-600' : 'text-gray-600'
                   }`}
               >
                 <div className={`text-2xl mb-2 p-3 rounded-full ${selectedCategory === category.name ? 'bg-amber-100' : 'bg-gray-100'
@@ -235,13 +235,13 @@ export default function Home() {
       {/* Featured Products Grid */}
       <section className="py-8 bg-white border-b">
         <div className="container mx-auto px-4">
-          <div className="flex justify-center space-x-8 py-2 hide-scrollbar">
-            <h2 className={`${playfair.className} text-3xl font-bold text-gray-900`}>
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 py-2">
+            <h2 className={`${playfair.className} text-3xl font-bold text-gray-900 text-center sm:text-left`}>
               Featured Products
             </h2>
-            <div className="flex space-x-4">
+            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
               <select
-                className="border border-gray-800 text-gray-600  cursor-pointer rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+                className="border border-gray-300 text-gray-600 cursor-pointer rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
               >
@@ -254,7 +254,7 @@ export default function Home() {
               </select>
               <Link
                 href="/shop"
-                className="bg-amber-600 hover:bg-amber-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+                className="bg-amber-600 hover:bg-amber-700 text-white px-6 py-2 rounded-lg font-medium transition-colors w-full sm:w-auto text-center"
               >
                 View All Products
               </Link>
