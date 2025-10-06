@@ -267,7 +267,7 @@ export default function Home() {
                 key={product.id}
                 className="bg-white rounded-lg border border-gray-200 hover:border-amber-300 hover:shadow-lg transition-all duration-300 group"
               >
-                <Link href={`/product/${product.id}`}>
+                <Link href={`/products/${product.id}`}>
                   <div className="relative aspect-square overflow-hidden rounded-t-lg">
                     <img
                       src={product.image}

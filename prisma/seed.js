@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { PrismaClient } = require("@prisma/client");
+const { PrismaClient, ArtworkStatus } = require("@prisma/client");
 const bcrypt = require("bcrypt");
 
 const prisma = new PrismaClient();
@@ -56,6 +56,41 @@ const categories = [
     icon: "👘",
     productCount: 1,
   },
+  // ======================
+  // Art Categories
+  // ======================
+  {
+    name: "painting",
+    displayName: "Painting",
+    description: "Traditional and contemporary paintings",
+    image: "/images/categories/painting.jpg",
+    icon: "🎨",
+    productCount: 0,
+  },
+  {
+    name: "abstract",
+    displayName: "Abstract",
+    description: "Abstract art and expressionist works",
+    image: "/images/categories/abstract.jpg",
+    icon: "🟡",
+    productCount: 0,
+  },
+  {
+    name: "digital",
+    displayName: "Digital Art",
+    description: "Digital creations and prints",
+    image: "/images/categories/digital.jpg",
+    icon: "💻",
+    productCount: 0,
+  },
+  {
+    name: "photography",
+    displayName: "Photography",
+    description: "Fine art photography prints",
+    image: "/images/categories/photography.jpg",
+    icon: "📷",
+    productCount: 0,
+  },
 ];
 
 // ======================
@@ -70,7 +105,7 @@ const products = [
     image: "/images/products/basket.jpg",
     category: "home-decor",
     rating: 4.5,
-    reviews: 128,
+    reviewCount: 128,  // Changed from 'reviews'
   },
   {
     name: "Ceramic Vase",
@@ -80,7 +115,7 @@ const products = [
     image: "/images/products/TKX00217.jpg",
     category: "ceramics",
     rating: 4.8,
-    reviews: 89,
+    reviewCount: 89,  // Changed from 'reviews'
   },
   {
     name: "Wooden Sculpture",
@@ -89,7 +124,7 @@ const products = [
     image: "/images/products/TKX00247.jpg",
     category: "woodwork",
     rating: 4.3,
-    reviews: 67,
+    reviewCount: 67,  // Changed from 'reviews'
   },
   {
     name: "Embroidered Textile",
@@ -98,7 +133,7 @@ const products = [
     image: "/images/products/textiles.jpg",
     category: "textiles",
     rating: 4.6,
-    reviews: 203,
+    reviewCount: 203,  // Changed from 'reviews'
   },
   {
     name: "Beaded Jewelry Set",
@@ -108,7 +143,7 @@ const products = [
     image: "/images/products/jewelry.jpg",
     category: "jewelry",
     rating: 4.9,
-    reviews: 156,
+    reviewCount: 156,  // Changed from 'reviews'
   },
   {
     name: "Silver Tribal Necklace",
@@ -117,7 +152,7 @@ const products = [
     image: "/images/products/jewelry-2.jpg",
     category: "jewelry",
     rating: 4.7,
-    reviews: 92,
+    reviewCount: 92,  // Changed from 'reviews'
   },
   {
     name: "Gold Plated Earrings",
@@ -126,7 +161,7 @@ const products = [
     image: "/images/products/jewelry-3.jpg",
     category: "jewelry",
     rating: 4.8,
-    reviews: 134,
+    reviewCount: 134,  // Changed from 'reviews'
   },
   {
     name: "Traditional Bracelet Set",
@@ -135,7 +170,7 @@ const products = [
     image: "/images/products/jewelry-4.jpg",
     category: "jewelry",
     rating: 4.6,
-    reviews: 78,
+    reviewCount: 78,  // Changed from 'reviews'
   },
   {
     name: "Handwoven Wall Hanging",
@@ -144,7 +179,7 @@ const products = [
     image: "/images/products/textiles-2.jpg",
     category: "home-decor",
     rating: 4.4,
-    reviews: 56,
+    reviewCount: 56,  // Changed from 'reviews'
   },
   {
     name: "Decorative Ceramic Plates",
@@ -153,8 +188,135 @@ const products = [
     image: "/images/products/ceramics-2.jpg",
     category: "home-decor",
     rating: 4.7,
-    reviews: 89,
+    reviewCount: 89,  // Changed from 'reviews'
   },
+];
+
+// ======================
+// Artworks
+// ======================
+const artworks = [
+  { 
+    title: 'Sunset Dreams', 
+    artist: 'Maria Rodriguez', 
+    price: 2500, 
+    status: ArtworkStatus.AVAILABLE, 
+    category: 'Painting', 
+    medium: 'Oil on Canvas',
+    views: 1247, 
+    likes: 89,
+    featured: true,
+    description: 'A beautiful sunset landscape capturing the golden hour over rolling hills.',
+    dimensions: '24" x 36"',
+    imageUrl: '/images/artworks/sunset-dreams.jpg',
+    createdAt: new Date('2024-01-15')
+  },
+  { 
+    title: 'Abstract Harmony', 
+    artist: 'James Wilson', 
+    price: 1800, 
+    status: ArtworkStatus.SOLD, 
+    category: 'Abstract', 
+    medium: 'Acrylic',
+    views: 892, 
+    likes: 67,
+    featured: false,
+    description: 'An exploration of color and form in abstract expressionism.',
+    dimensions: '30" x 30"',
+    imageUrl: '/images/artworks/abstract-harmony.jpg',
+    createdAt: new Date('2024-01-10')
+  },
+  { 
+    title: 'Ocean Waves', 
+    artist: 'Sarah Chen', 
+    price: 3200, 
+    status: ArtworkStatus.AVAILABLE, 
+    category: 'Digital', 
+    medium: 'Digital Art',
+    views: 1567, 
+    likes: 124,
+    featured: true,
+    description: 'Digital rendering of powerful ocean waves with photorealistic details.',
+    dimensions: 'Limited Edition Print',
+    imageUrl: '/images/artworks/ocean-waves.jpg',
+    createdAt: new Date('2024-01-08')
+  },
+  { 
+    title: 'Mountain Peak', 
+    artist: 'Robert Kim', 
+    price: 2750, 
+    status: ArtworkStatus.RESERVED, 
+    category: 'Photography', 
+    medium: 'Fine Art Print',
+    views: 734, 
+    likes: 45,
+    featured: false,
+    description: 'Black and white photography of majestic mountain ranges at dawn.',
+    dimensions: '16" x 24"',
+    imageUrl: '/images/artworks/mountain-peak.jpg',
+    createdAt: new Date('2024-01-12')
+  },
+  // Additional artworks to showcase variety
+  { 
+    title: 'Urban Reflections', 
+    artist: 'Lisa Thompson', 
+    price: 1900, 
+    status: ArtworkStatus.AVAILABLE, 
+    category: 'Painting', 
+    medium: 'Watercolor',
+    views: 567, 
+    likes: 34,
+    featured: false,
+    description: 'Cityscape reflections in rain puddles with vibrant watercolor technique.',
+    dimensions: '18" x 24"',
+    imageUrl: '/images/artworks/urban-reflections.jpg',
+    createdAt: new Date('2024-01-20')
+  },
+  { 
+    title: 'Desert Bloom', 
+    artist: 'Ahmed Hassan', 
+    price: 4200, 
+    status: ArtworkStatus.AVAILABLE, 
+    category: 'Abstract', 
+    medium: 'Mixed Media',
+    views: 892, 
+    likes: 78,
+    featured: true,
+    description: 'Mixed media exploration of desert flora and geometric patterns.',
+    dimensions: '36" x 48"',
+    imageUrl: '/images/artworks/desert-bloom.jpg',
+    createdAt: new Date('2024-01-05')
+  },
+  { 
+    title: 'Silent Forest', 
+    artist: 'Emma Wilson', 
+    price: 2800, 
+    status: ArtworkStatus.RESERVED, 
+    category: 'Photography', 
+    medium: 'Fine Art Print',
+    views: 1123, 
+    likes: 156,
+    featured: false,
+    description: 'Misty morning in an ancient forest captured with large format camera.',
+    dimensions: '20" x 30"',
+    imageUrl: '/images/artworks/silent-forest.jpg',
+    createdAt: new Date('2024-01-18')
+  },
+  { 
+    title: 'Neon Dreams', 
+    artist: 'Carlos Martinez', 
+    price: 3500, 
+    status: ArtworkStatus.AVAILABLE, 
+    category: 'Digital', 
+    medium: 'Digital Painting',
+    views: 2045, 
+    likes: 234,
+    featured: true,
+    description: 'Cyberpunk cityscape with neon lights and futuristic elements.',
+    dimensions: 'Digital Original',
+    imageUrl: '/images/artworks/neon-dreams.jpg',
+    createdAt: new Date('2024-01-03')
+  }
 ];
 
 // ======================
@@ -185,6 +347,15 @@ const users = [
     password: "client123",
     isVerified: false,
   },
+  // Additional user for artwork management
+  {
+    email: "gallery@example.com",
+    firstName: "Gallery",
+    lastName: "Manager",
+    role: "MANAGER",
+    password: "gallery123",
+    isVerified: true,
+  },
 ];
 
 // ======================
@@ -194,6 +365,7 @@ async function main() {
   console.log("🌱 Seeding database...");
 
   // 👉 Seed Categories
+  console.log("📁 Seeding categories...");
   for (const cat of categories) {
     await prisma.category.upsert({
       where: { name: cat.name },
@@ -203,6 +375,7 @@ async function main() {
   }
 
   // 👉 Seed Products
+  console.log("🛍️ Seeding products...");
   for (const p of products) {
     await prisma.product.upsert({
       where: { name: p.name },
@@ -211,7 +384,33 @@ async function main() {
     });
   }
 
+  // 👉 Seed Artworks (Fixed approach)
+  console.log("🎨 Seeding artworks...");
+  for (const artwork of artworks) {
+    // First, try to find if artwork exists
+    const existingArtwork = await prisma.artwork.findFirst({
+      where: {
+        title: artwork.title,
+        artist: artwork.artist
+      }
+    });
+
+    if (existingArtwork) {
+      // Update existing artwork
+      await prisma.artwork.update({
+        where: { id: existingArtwork.id },
+        data: artwork
+      });
+    } else {
+      // Create new artwork
+      await prisma.artwork.create({
+        data: artwork
+      });
+    }
+  }
+
   // 👉 Seed Users with hashed passwords
+  console.log("👥 Seeding users...");
   for (const u of users) {
     const hashedPassword = await bcrypt.hash(u.password, 10);
 
@@ -236,6 +435,11 @@ async function main() {
   }
 
   console.log("✅ Seeding finished!");
+  console.log(`📊 Summary:`);
+  console.log(`   - ${categories.length} categories`);
+  console.log(`   - ${products.length} products`);
+  console.log(`   - ${artworks.length} artworks`);
+  console.log(`   - ${users.length} users`);
 }
 
 // Run it

@@ -33,7 +33,7 @@ export const MetricsCard = ({
   const skeletonBg = theme === "dark" ? "bg-gray-700" : "bg-amber-200";
 
   const metrics = [
-    { value: total, label: "Total Products", icon: <FaPalette />, description: "Gallery collection" },
+    { value: total, label: "Total ArtWorks", icon: <FaPalette />, description: "Gallery collection" },
     { value: flagged, label: "Total Orders", icon: <FaShoppingCart />, description: "Completed sales" },
     { value: unverified, label: "Total Revenue", icon: <FaDollarSign />, description: "This month" },
     { value: users, label: "Active Artists", icon: <FaUserFriends />, description: "In our network" },

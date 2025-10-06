@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Inter, Playfair_Display } from 'next/font/google';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from 'next-themes';
+import Image from 'next/image';
 import { useAutoDismiss } from '../hook/useAutoDismiss';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -103,14 +104,27 @@ export default function LoginPage() {
             transition={{ duration: 0.6 }}
             className="hidden lg:flex flex-col items-center justify-center text-center p-8"
           >
-            <div className="relative w-full max-w-md">
+            <div className="relative w-full max-w-md mt-16">
               {/* Abstract Art Illustration */}
               <div className="absolute -top-8 -left-8 w-32 h-32 bg-gradient-to-br from-amber-400 to-orange-500 opacity-20 blur-xl"></div>
               <div className="absolute -bottom-8 -right-8 w-40 h-40 bg-gradient-to-tr from-purple-400 to-pink-500 opacity-20 blur-xl"></div>
-              
-              <div className="relative bg-white/80 backdrop-blur-sm p-12 shadow-2xl border border-white/50">
-                <div className="w-20 h-20 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg">
-                  <span className="text-2xl">🎨</span>
+
+              <div className="relative bg-white/80 backdrop-blur-sm p-2 shadow-2xl border border-white/50">
+                <div className=" w-80 h-80 bg-gradient-to-br from-amber-600 to-black rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg">
+                  <Link
+                    href="/"
+                    className="transition-colors"
+                    aria-label="Artisan Crafts Home"
+                  >
+                    <Image
+                      src="/images/logo/insight-logo-dark.png"
+                      alt="Insight Art Space Logo"
+                      width={250} 
+                      height={200} // 60 ÷ (80/26) = 19.5
+                      className={`transition-opacity  hover:opacity-80`}
+                      priority
+                    />
+                  </Link>
                 </div>
                 <h2 className={`${playfair.className} text-4xl font-bold text-gray-900 mb-4`}>
                   Welcome to <span className="text-amber-600">Insight Art Space</span>
@@ -142,9 +156,23 @@ export default function LoginPage() {
             <div className="w-full max-w-md bg-white/90 backdrop-blur-sm shadow-2xl rounded-3xl p-2 lg:px-10 border border-white/50">
               {/* Header */}
               <div className="text-center mb-8">
-                <div className="w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg">
-                  <span className="text-2xl text-white">👋</span>
-                </div>
+                {/* <div className="w-16 h-16 bg-gradient-to-br from-black to-black rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg">
+                  <Link
+                    href="/"
+                    className="transition-colors"
+                    aria-label="Artisan Crafts Home"
+                  >
+                    <Image
+                      src="/images/logo/insight-logo.png"
+                      alt="Insight Art Space Logo"
+                      width={30} // Reduced from 80
+                      height={30} // 60 ÷ (80/26) = 19.5
+                      // className={`transition-opacity  ${isScrolled ? 'opacity-90' : 'opacity-100'
+                      //   } hover:opacity-80`}
+                      priority
+                    />
+                  </Link>
+                </div> */}
                 <h1 className={`${playfair.className} text-3xl lg:text-2xl font-bold text-gray-900 mb-1`}>
                   Login
                 </h1>
@@ -163,18 +191,17 @@ export default function LoginPage() {
                     </div>
                     <input
                       type="email"
-                      className={`block w-full pl-10 pr-4 py-3.5 rounded-xl border-2 bg-white/50 backdrop-blur-sm transition-all duration-200 ${
-                        errors.email 
-                          ? 'border-red-300 focus:border-red-500' 
-                          : 'border-gray-200/80 focus:border-amber-500 hover:border-gray-300'
-                      } focus:outline-none focus:ring-4 focus:ring-amber-500/20`}
+                      className={`block w-full pl-10 pr-4 py-3.5 rounded-xl border-2 bg-white/50 backdrop-blur-sm transition-all duration-200 ${errors.email
+                        ? 'border-red-300 focus:border-red-500'
+                        : 'border-gray-200/80 focus:border-amber-500 hover:border-gray-300'
+                        } focus:outline-none focus:ring-4 focus:ring-amber-500/20`}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="you@example.com"
                     />
                   </div>
                   {errors.email && (
-                    <motion.p 
+                    <motion.p
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       className="text-red-500 text-xs flex items-center"
@@ -193,11 +220,10 @@ export default function LoginPage() {
                     </div>
                     <input
                       type={showPassword ? 'text' : 'password'}
-                      className={`block w-full pl-10 pr-12 py-3.5 rounded-xl border-2 bg-white/50 backdrop-blur-sm transition-all duration-200 ${
-                        errors.password 
-                          ? 'border-red-300 focus:border-red-500' 
-                          : 'border-gray-200/80 focus:border-amber-500 hover:border-gray-300'
-                      } focus:outline-none focus:ring-4 focus:ring-amber-500/20`}
+                      className={`block w-full pl-10 pr-12 py-3.5 rounded-xl border-2 bg-white/50 backdrop-blur-sm transition-all duration-200 ${errors.password
+                        ? 'border-red-300 focus:border-red-500'
+                        : 'border-gray-200/80 focus:border-amber-500 hover:border-gray-300'
+                        } focus:outline-none focus:ring-4 focus:ring-amber-500/20`}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="••••••••"
@@ -211,7 +237,7 @@ export default function LoginPage() {
                     </button>
                   </div>
                   {errors.password && (
-                    <motion.p 
+                    <motion.p
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       className="text-red-500 text-xs flex items-center"
@@ -223,8 +249,8 @@ export default function LoginPage() {
 
                 {/* Forgot Password */}
                 <div className="flex justify-end">
-                  <Link 
-                    href="/forgotPassword" 
+                  <Link
+                    href="/forgotPassword"
                     className="text-sm text-amber-600 hover:text-amber-700 font-medium transition-colors duration-200"
                   >
                     Forgot your password?

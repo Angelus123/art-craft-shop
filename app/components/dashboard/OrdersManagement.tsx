@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   FaSearch, 
   FaEye, 
@@ -16,7 +16,8 @@ import {
   FaTruck,
   FaMapMarkerAlt,
   FaPhone,
-  FaEnvelope
+  FaEnvelope,
+  FaExclamationTriangle 
 } from 'react-icons/fa';
 
 interface ThemeStyles {
@@ -31,8 +32,50 @@ interface ThemeStyles {
   buttonBg: string;
 }
 
+// API Response Interfaces
+interface ApiUser {
+  id: string;
+  name: string;
+  email: string;
+}
+
+interface ApiProduct {
+  id: string;
+  title: string;
+}
+
+interface ApiOrderItem {
+  productId: string;
+  product: ApiProduct;
+}
+
+interface ApiOrder {
+  id: string;
+  orderNumber: string;
+  status: string;
+  totalAmount: number;
+  shippingFee: number;
+  taxAmount: number;
+  customerNote?: string;
+  shippingFullName: string;
+  shippingStreet: string;
+  shippingCity: string;
+  shippingState: string;
+  shippingPostalCode: string;
+  shippingCountry: string;
+  shippingPhone?: string;
+  trackingNumber?: string;
+  createdAt: string;
+  updatedAt: string;
+  paidAt?: string;
+  deliveredAt?: string;
+  user: ApiUser;
+  orderItems: ApiOrderItem[];
+}
+
 interface Order {
   id: string;
+  orderNumber: string;
   artworkTitle: string;
   customer: string;
   customerEmail: string;
@@ -43,7 +86,7 @@ interface Order {
   orderDate: string;
   deliveryDate: string;
   payment: 'Paid' | 'Pending' | 'Refunded';
-  artworkId?: number;
+  artworkId?: string;
   shippingMethod: string;
   trackingNumber?: string;
   notes?: string;
@@ -53,83 +96,144 @@ interface OrdersManagementProps {
   themeStyles: ThemeStyles;
 }
 
+// Toast component
+interface ToastProps {
+  message: string;
+  type: 'success' | 'error';
+  onClose: () => void;
+}
+
+const Toast = ({ message, type, onClose }: ToastProps) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose();
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [onClose]);
+
+  return (
+    <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg border transform transition-transform duration-300 translate-x-0 ${
+      type === 'success' 
+        ? 'bg-green-50 border-green-200 text-green-800 dark:bg-green-900/20 dark:border-green-800 dark:text-green-300'
+        : 'bg-red-50 border-red-200 text-red-800 dark:bg-red-900/20 dark:border-red-800 dark:text-red-300'
+    }`}>
+      <div className="flex items-center gap-3">
+        <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
+          type === 'success' 
+            ? 'bg-green-500 text-white' 
+            : 'bg-red-500 text-white'
+        }`}>
+          {type === 'success' ? <FaCheck size={12} /> : <FaExclamationTriangle size={12} />}
+        </div>
+        <span className="font-medium">{message}</span>
+        <button
+          onClick={onClose}
+          className="ml-2 hover:opacity-70 transition-opacity"
+        >
+          <FaTimes size={14} />
+        </button>
+      </div>
+    </div>
+  );
+};
+
 export default function OrdersManagement({ themeStyles }: OrdersManagementProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
-  const [orders, setOrders] = useState<Order[]>([
-    { 
-      id: 'ORD-7894', 
-      artworkTitle: 'Abstract Harmony', 
-      customer: 'John Smith', 
-      customerEmail: 'john.smith@email.com',
-      customerPhone: '+1 (555) 123-4567',
-      shippingAddress: '123 Main St, New York, NY 10001, USA',
-      amount: 2500, 
-      status: 'Completed',
-      orderDate: '2024-01-15',
-      deliveryDate: '2024-01-20',
-      payment: 'Paid',
-      artworkId: 2,
-      shippingMethod: 'Express Shipping',
-      trackingNumber: 'TRK789456123',
-      notes: 'Customer requested signature confirmation'
-    },
-    { 
-      id: 'ORD-7895', 
-      artworkTitle: 'Ocean Waves', 
-      customer: 'Sarah Johnson', 
-      customerEmail: 'sarah.j@email.com',
-      customerPhone: '+1 (555) 987-6543',
-      shippingAddress: '456 Oak Ave, Los Angeles, CA 90210, USA',
-      amount: 3200, 
-      status: 'Shipped',
-      orderDate: '2024-01-14',
-      deliveryDate: '2024-01-18',
-      payment: 'Paid',
-      artworkId: 3,
-      shippingMethod: 'Standard Shipping',
-      trackingNumber: 'TRK123456789',
-      notes: 'Fragile item - handle with care'
-    },
-    { 
-      id: 'ORD-7896', 
-      artworkTitle: 'Mountain Peak', 
-      customer: 'Mike Davis', 
-      customerEmail: 'mike.davis@email.com',
-      customerPhone: '+1 (555) 456-7890',
-      shippingAddress: '789 Pine Rd, Chicago, IL 60601, USA',
-      amount: 2750, 
-      status: 'Pending',
-      orderDate: '2024-01-13',
-      deliveryDate: '2024-01-17',
-      payment: 'Pending',
-      artworkId: 4,
-      shippingMethod: 'Express Shipping',
-      notes: 'Awaiting payment confirmation'
-    },
-    { 
-      id: 'ORD-7897', 
-      artworkTitle: 'Sunset Dreams', 
-      customer: 'Emma Wilson', 
-      customerEmail: 'emma.wilson@email.com',
-      customerPhone: '+1 (555) 234-5678',
-      shippingAddress: '321 Elm St, Miami, FL 33101, USA',
-      amount: 1800, 
-      status: 'Cancelled',
-      orderDate: '2024-01-12',
-      deliveryDate: '2024-01-16',
-      payment: 'Refunded',
-      artworkId: 1,
-      shippingMethod: 'Standard Shipping',
-      notes: 'Customer requested cancellation'
-    },
-  ]);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [modalLoading, setModalLoading] = useState(false);
 
   // Modal states
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-  const [editedOrder, setEditedOrder] = useState<Partial<Order>>({});
+  const [editedOrder, setEditedOrder] = useState<Order | null>(null);
+
+  // Toast state
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type });
+  };
+
+  const mapDbToComponentStatus = (dbStatus: string): Order['status'] => {
+    switch (dbStatus) {
+      case 'PENDING':
+      case 'CONFIRMED':
+        return 'Pending';
+      case 'SHIPPED':
+        return 'Shipped';
+      case 'DELIVERED':
+        return 'Completed';
+      case 'CANCELLED':
+        return 'Cancelled';
+      default:
+        return 'Pending';
+    }
+  };
+
+  const mapComponentToDbStatus = (compStatus: Order['status']): string => {
+    switch (compStatus) {
+      case 'Pending':
+        return 'PENDING';
+      case 'Shipped':
+        return 'SHIPPED';
+      case 'Completed':
+        return 'DELIVERED';
+      case 'Cancelled':
+        return 'CANCELLED';
+      default:
+        return 'PENDING';
+    }
+  };
+
+  const fetchOrders = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/orders');
+      if (!response.ok) {
+        throw new Error('Failed to fetch orders');
+      }
+      const apiOrders: ApiOrder[] = await response.json();
+      
+      const mappedOrders: Order[] = apiOrders.map((order: ApiOrder) => ({
+        id: order.id,
+        orderNumber: order.orderNumber,
+        artworkTitle: order.orderItems?.[0]?.product?.title || 'N/A',
+        customer: order.user?.name || order.shippingFullName,
+        customerEmail: order.user?.email || '',
+        customerPhone: order.shippingPhone || '',
+        shippingAddress: [
+          order.shippingFullName,
+          order.shippingStreet,
+          `${order.shippingCity}, ${order.shippingState} ${order.shippingPostalCode}`,
+          order.shippingCountry
+        ].filter(Boolean).join(', '),
+        amount: order.totalAmount,
+        status: mapDbToComponentStatus(order.status),
+        orderDate: new Date(order.createdAt).toISOString().split('T')[0],
+        deliveryDate: order.deliveredAt ? new Date(order.deliveredAt).toISOString().split('T')[0] : '',
+        payment: order.paidAt ? 'Paid' : 'Pending',
+        artworkId: order.orderItems?.[0]?.productId,
+        shippingMethod: 'Standard Shipping',
+        trackingNumber: order.trackingNumber,
+        notes: order.customerNote,
+      }));
+      
+      setOrders(mappedOrders);
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+      showToast('Failed to fetch orders', 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -152,7 +256,7 @@ export default function OrdersManagement({ themeStyles }: OrdersManagementProps)
   const filteredOrders = orders.filter(order => {
     const matchesSearch = order.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          order.artworkTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         order.id.toLowerCase().includes(searchTerm.toLowerCase());
+                         order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -173,22 +277,82 @@ export default function OrdersManagement({ themeStyles }: OrdersManagementProps)
     setIsViewModalOpen(false);
     setIsEditModalOpen(false);
     setSelectedOrder(null);
-    setEditedOrder({});
+    setEditedOrder(null);
   };
 
   // Order Actions
-  const handleUpdateOrderStatus = (orderId: string, newStatus: Order['status']) => {
-    setOrders(prev => prev.map(order => 
-      order.id === orderId ? { ...order, status: newStatus } : order
-    ));
+  const handleUpdateOrderStatus = async (orderId: string, newStatus: Order['status']) => {
+    try {
+      const apiData = {
+        status: mapComponentToDbStatus(newStatus),
+      };
+      const response = await fetch(`/api/orders/${orderId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(apiData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update status');
+      }
+
+      showToast(`Order status updated to ${newStatus}`);
+      await fetchOrders();
+    } catch (err) {
+      console.error('Error updating status:', err);
+      showToast('Failed to update order status', 'error');
+    }
   };
 
-  const handleUpdateOrder = () => {
-    if (!selectedOrder) return;
-    setOrders(prev => prev.map(order => 
-      order.id === selectedOrder.id ? { ...order, ...editedOrder } : order
-    ));
-    closeModals();
+  const handleUpdateOrder = async () => {
+    if (!selectedOrder || !editedOrder) return;
+    setModalLoading(true);
+    try {
+      const apiData: Partial<ApiOrder> = {
+        status: mapComponentToDbStatus(editedOrder.status),
+        customerNote: editedOrder.notes,
+      };
+
+      // Handle delivery date
+      if (editedOrder.deliveryDate) {
+        apiData.deliveredAt = new Date(editedOrder.deliveryDate).toISOString();
+      }
+
+      // Handle payment
+      if (editedOrder.payment !== selectedOrder.payment) {
+        apiData.paidAt = editedOrder.payment === 'Paid' ? new Date().toISOString() : undefined;
+      }
+
+      // Remove undefined fields
+      Object.keys(apiData).forEach(key => {
+        if (apiData[key as keyof ApiOrder] === undefined) {
+          delete apiData[key as keyof ApiOrder];
+        }
+      });
+
+      const response = await fetch(`/api/orders/${selectedOrder.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(apiData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update order');
+      }
+
+      showToast('Order updated successfully!');
+      await fetchOrders();
+      closeModals();
+    } catch (err) {
+      console.error('Error updating order:', err);
+      showToast('Failed to update order. Please try again.', 'error');
+    } finally {
+      setModalLoading(false);
+    }
   };
 
   const handleExportOrders = () => {
@@ -196,7 +360,7 @@ export default function OrdersManagement({ themeStyles }: OrdersManagementProps)
     const csvContent = [
       headers.join(','),
       ...orders.map(order => [
-        order.id,
+        order.orderNumber,
         `"${order.artworkTitle}"`,
         `"${order.customer}"`,
         order.amount,
@@ -218,7 +382,9 @@ export default function OrdersManagement({ themeStyles }: OrdersManagementProps)
   };
 
   const handleInputChange = (field: keyof Order, value: string | number | boolean) => {
-    setEditedOrder(prev => ({ ...prev, [field]: value }));
+    if (editedOrder) {
+      setEditedOrder(prev => ({ ...prev, [field]: value } as Order));
+    }
   };
 
   // Modal Component
@@ -260,7 +426,7 @@ export default function OrdersManagement({ themeStyles }: OrdersManagementProps)
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className={themeStyles.mutedText}>Order ID:</span>
-                      <span className="font-mono font-semibold">{order.id}</span>
+                      <span className="font-mono font-semibold">{order.orderNumber}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className={themeStyles.mutedText}>Artwork:</span>
@@ -388,7 +554,7 @@ export default function OrdersManagement({ themeStyles }: OrdersManagementProps)
                       ) : (
                         <select
                           value={order.status || ''}
-                          onChange={(e) => handleInputChange('status', e.target.value)}
+                          onChange={(e) => handleInputChange('status', e.target.value as Order['status'])}
                           className={`w-full px-3 py-2 rounded-lg border ${themeStyles.borderColor} ${themeStyles.inputBg} ${themeStyles.textColor} focus:outline-none focus:ring-2 focus:ring-amber-500`}
                         >
                           <option value="Pending">Pending</option>
@@ -407,7 +573,7 @@ export default function OrdersManagement({ themeStyles }: OrdersManagementProps)
                       ) : (
                         <select
                           value={order.payment || ''}
-                          onChange={(e) => handleInputChange('payment', e.target.value)}
+                          onChange={(e) => handleInputChange('payment', e.target.value as Order['payment'])}
                           className={`w-full px-3 py-2 rounded-lg border ${themeStyles.borderColor} ${themeStyles.inputBg} ${themeStyles.textColor} focus:outline-none focus:ring-2 focus:ring-amber-500`}
                         >
                           <option value="Pending">Pending</option>
@@ -440,10 +606,11 @@ export default function OrdersManagement({ themeStyles }: OrdersManagementProps)
                 </button>
                 <button
                   onClick={handleUpdateOrder}
-                  className={`${themeStyles.buttonBg} text-white px-6 py-3 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2`}
+                  disabled={modalLoading}
+                  className={`${themeStyles.buttonBg} text-white px-6 py-3 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2 disabled:opacity-50`}
                 >
                   <FaCheck />
-                  Update Order
+                  {modalLoading ? 'Updating...' : 'Update Order'}
                 </button>
               </div>
             )}
@@ -458,6 +625,22 @@ export default function OrdersManagement({ themeStyles }: OrdersManagementProps)
   const completedOrders = orders.filter(order => order.status === 'Completed').length;
   const pendingOrders = orders.filter(order => order.status === 'Pending').length;
   const totalRevenue = orders.filter(order => order.payment === 'Paid').reduce((sum, order) => sum + order.amount, 0);
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl font-bold text-white">Orders Management</h1>
+            <p className={`${themeStyles.mutedText} font-bold text-white`}>Manage customer orders and track shipments</p>
+          </div>
+        </div>
+        <div className={`${themeStyles.cardBg} rounded-xl border ${themeStyles.borderColor} p-8 text-center`}>
+          <p className={themeStyles.textColor}>Loading orders...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -534,64 +717,72 @@ export default function OrdersManagement({ themeStyles }: OrdersManagementProps)
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-              {filteredOrders.map((order) => (
-                <tr key={order.id} className={themeStyles.tableRowHover}>
-                  <td className="px-6 py-4 font-mono text-sm font-medium">{order.id}</td>
-                  <td className="px-6 py-4">
-                    <div className="font-medium">{order.artworkTitle}</div>
-                  </td>
-                  <td className="px-6 py-4">{order.customer}</td>
-                  <td className="px-6 py-4 font-semibold">${order.amount.toLocaleString()}</td>
-                  <td className="px-6 py-4">
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
-                      {order.status === 'Shipped' && <FaShippingFast className="mr-1" />}
-                      {order.status === 'Completed' && <FaCheck className="mr-1" />}
-                      {order.status === 'Cancelled' && <FaTimes className="mr-1" />}
-                      {order.status}
-                    </span>
-                  </td>
-                  <td className={`px-6 py-4 font-medium ${getPaymentColor(order.payment)}`}>
-                    {order.payment}
-                  </td>
-                  <td className="px-6 py-4 text-sm">{new Date(order.orderDate).toLocaleDateString()}</td>
-                  <td className="px-6 py-4">
-                    <div className="flex gap-2">
-                      <button 
-                        onClick={() => openViewModal(order)}
-                        className="p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors" 
-                        title="View Details"
-                      >
-                        <FaEye />
-                      </button>
-                      <button 
-                        onClick={() => openEditModal(order)}
-                        className="p-2 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-lg transition-colors" 
-                        title="Edit Order"
-                      >
-                        <FaEdit />
-                      </button>
-                      {order.status === 'Pending' && (
-                        <button 
-                          onClick={() => handleUpdateOrderStatus(order.id, 'Shipped')}
-                          className="p-2 text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-lg transition-colors" 
-                          title="Mark as Shipped"
-                        >
-                          <FaShippingFast />
-                        </button>
-                      )}
-                      {order.status === 'Shipped' && (
-                        <button 
-                          onClick={() => handleUpdateOrderStatus(order.id, 'Completed')}
-                          className="p-2 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-lg transition-colors" 
-                          title="Mark as Completed"
-                        >
-                          <FaCheck />
-                        </button>
-                      )}
-                    </div>
+              {filteredOrders.length === 0 ? (
+                <tr>
+                  <td colSpan={8} className="px-6 py-12 text-center">
+                    <p className={themeStyles.mutedText}>No orders found matching the current filters.</p>
                   </td>
                 </tr>
-              ))}
+              ) : (
+                filteredOrders.map((order) => (
+                  <tr key={order.id} className={themeStyles.tableRowHover}>
+                    <td className="px-6 py-4 font-mono text-sm font-medium">{order.orderNumber}</td>
+                    <td className="px-6 py-4">
+                      <div className="font-medium">{order.artworkTitle}</div>
+                    </td>
+                    <td className="px-6 py-4">{order.customer}</td>
+                    <td className="px-6 py-4 font-semibold">${order.amount.toLocaleString()}</td>
+                    <td className="px-6 py-4">
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
+                        {order.status === 'Shipped' && <FaShippingFast className="mr-1" />}
+                        {order.status === 'Completed' && <FaCheck className="mr-1" />}
+                        {order.status === 'Cancelled' && <FaTimes className="mr-1" />}
+                        {order.status}
+                      </span>
+                    </td>
+                    <td className={`px-6 py-4 font-medium ${getPaymentColor(order.payment)}`}>
+                      {order.payment}
+                    </td>
+                    <td className="px-6 py-4 text-sm">{new Date(order.orderDate).toLocaleDateString()}</td>
+                    <td className="px-6 py-4">
+                      <div className="flex gap-2">
+                        <button 
+                          onClick={() => openViewModal(order)}
+                          className="p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors" 
+                          title="View Details"
+                        >
+                          <FaEye />
+                        </button>
+                        <button 
+                          onClick={() => openEditModal(order)}
+                          className="p-2 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-lg transition-colors" 
+                          title="Edit Order"
+                        >
+                          <FaEdit />
+                        </button>
+                        {order.status === 'Pending' && (
+                          <button 
+                            onClick={() => handleUpdateOrderStatus(order.id, 'Shipped')}
+                            className="p-2 text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-lg transition-colors" 
+                            title="Mark as Shipped"
+                          >
+                            <FaShippingFast />
+                          </button>
+                        )}
+                        {order.status === 'Shipped' && (
+                          <button 
+                            onClick={() => handleUpdateOrderStatus(order.id, 'Completed')}
+                            className="p-2 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-lg transition-colors" 
+                            title="Mark as Completed"
+                          >
+                            <FaCheck />
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -599,6 +790,15 @@ export default function OrdersManagement({ themeStyles }: OrdersManagementProps)
 
       {/* Render Modal */}
       {renderModal()}
+
+      {/* Toast Notification */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 }
