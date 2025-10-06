@@ -56,12 +56,13 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
           className="transition-colors"
           aria-label="Artisan Crafts Home"
         >
+          
           <Image
-            src="/images/logo/logo.png"
+            src="/images/logo/insight-logo.png"
             alt="Insight Art Space Logo"
-            width={20} // Reduced from 80
-            height={20} // 60 ÷ (80/26) = 19.5
-            className={`transition-opacity rounded-full ${isScrolled ? 'opacity-90' : 'opacity-100'
+            width={40} // Reduced from 80
+            height={40} // 60 ÷ (80/26) = 19.5
+            className={`transition-opacity  ${isScrolled ? 'opacity-90' : 'opacity-100'
               } hover:opacity-80`}
             priority
           />

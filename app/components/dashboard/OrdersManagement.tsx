@@ -32,8 +32,49 @@ interface ThemeStyles {
   buttonBg: string;
 }
 
+// API Response Interfaces
+interface ApiUser {
+  id: string;
+  name: string;
+  email: string;
+}
+
+interface ApiProduct {
+  id: string;
+  title: string;
+}
+
+interface ApiOrderItem {
+  productId: string;
+  product: ApiProduct;
+}
+
+interface ApiOrder {
+  id: string;
+  orderNumber: string;
+  status: string;
+  totalAmount: number;
+  shippingFee: number;
+  taxAmount: number;
+  customerNote?: string;
+  shippingFullName: string;
+  shippingStreet: string;
+  shippingCity: string;
+  shippingState: string;
+  shippingPostalCode: string;
+  shippingCountry: string;
+  shippingPhone?: string;
+  trackingNumber?: string;
+  createdAt: string;
+  updatedAt: string;
+  paidAt?: string;
+  deliveredAt?: string;
+  user: ApiUser;
+  orderItems: ApiOrderItem[];
+}
+
 interface Order {
-  id: string; // MongoDB ID for API operations
+  id: string;
   orderNumber: string;
   artworkTitle: string;
   customer: string;
@@ -45,7 +86,7 @@ interface Order {
   orderDate: string;
   deliveryDate: string;
   payment: 'Paid' | 'Pending' | 'Refunded';
-  artworkId?: number;
+  artworkId?: string;
   shippingMethod: string;
   trackingNumber?: string;
   notes?: string;
@@ -155,8 +196,9 @@ export default function OrdersManagement({ themeStyles }: OrdersManagementProps)
       if (!response.ok) {
         throw new Error('Failed to fetch orders');
       }
-      const apiOrders: any[] = await response.json();
-      const mappedOrders: Order[] = apiOrders.map((order) => ({
+      const apiOrders: ApiOrder[] = await response.json();
+      
+      const mappedOrders: Order[] = apiOrders.map((order: ApiOrder) => ({
         id: order.id,
         orderNumber: order.orderNumber,
         artworkTitle: order.orderItems?.[0]?.product?.title || 'N/A',
@@ -175,10 +217,11 @@ export default function OrdersManagement({ themeStyles }: OrdersManagementProps)
         deliveryDate: order.deliveredAt ? new Date(order.deliveredAt).toISOString().split('T')[0] : '',
         payment: order.paidAt ? 'Paid' : 'Pending',
         artworkId: order.orderItems?.[0]?.productId,
-        shippingMethod: 'Standard Shipping', // Default, as not in schema
+        shippingMethod: 'Standard Shipping',
         trackingNumber: order.trackingNumber,
         notes: order.customerNote,
       }));
+      
       setOrders(mappedOrders);
     } catch (error) {
       console.error('Error fetching orders:', error);
@@ -267,20 +310,26 @@ export default function OrdersManagement({ themeStyles }: OrdersManagementProps)
     if (!selectedOrder || !editedOrder) return;
     setModalLoading(true);
     try {
-      const apiData: any = {
+      const apiData: Partial<ApiOrder> = {
         status: mapComponentToDbStatus(editedOrder.status),
         customerNote: editedOrder.notes,
-        deliveredAt: editedOrder.deliveryDate ? new Date(editedOrder.deliveryDate) : null,
       };
+
+      // Handle delivery date
+      if (editedOrder.deliveryDate) {
+        apiData.deliveredAt = new Date(editedOrder.deliveryDate).toISOString();
+      }
 
       // Handle payment
       if (editedOrder.payment !== selectedOrder.payment) {
-        apiData.paidAt = editedOrder.payment === 'Paid' ? new Date() : null;
+        apiData.paidAt = editedOrder.payment === 'Paid' ? new Date().toISOString() : undefined;
       }
 
       // Remove undefined fields
       Object.keys(apiData).forEach(key => {
-        if (apiData[key] === undefined) delete apiData[key];
+        if (apiData[key as keyof ApiOrder] === undefined) {
+          delete apiData[key as keyof ApiOrder];
+        }
       });
 
       const response = await fetch(`/api/orders/${selectedOrder.id}`, {

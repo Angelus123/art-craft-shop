@@ -239,7 +239,7 @@ export default function ArtworksManagement({ themeStyles }: ArtworksManagementPr
         },
         body: JSON.stringify({
           ...newArtwork,
-          price: parseFloat(newArtwork.price as any) || 0,
+          price: parseFloat(`${newArtwork.price}`) || 0,
           featured: Boolean(newArtwork.featured),
         }),
       });
@@ -270,7 +270,7 @@ export default function ArtworksManagement({ themeStyles }: ArtworksManagementPr
         },
         body: JSON.stringify({
           ...newArtwork,
-          price: parseFloat(newArtwork.price as any) || 0,
+          price: Number(newArtwork.price) || 0,
           featured: Boolean(newArtwork.featured),
         }),
       });

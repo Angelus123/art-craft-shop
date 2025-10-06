@@ -212,8 +212,8 @@ export default function CategoriesManagement({ themeStyles }: CategoriesManageme
         },
         body: JSON.stringify({
           ...newCategory,
-          productCount: parseInt(newCategory.productCount as any) || 0,
-          sortOrder: parseInt(newCategory.sortOrder as any) || 0,
+          productCount: Number(newCategory.productCount) || 0,
+          sortOrder: Number(newCategory.sortOrder) || 0,
           isActive: Boolean(newCategory.isActive),
         }),
       });
@@ -244,8 +244,8 @@ export default function CategoriesManagement({ themeStyles }: CategoriesManageme
         },
         body: JSON.stringify({
           ...newCategory,
-          productCount: parseInt(newCategory.productCount as any) || 0,
-          sortOrder: parseInt(newCategory.sortOrder as any) || 0,
+          productCount: Number(newCategory.productCount) || 0,
+          sortOrder: Number(newCategory.sortOrder) || 0,
           isActive: Boolean(newCategory.isActive),
         }),
       });
