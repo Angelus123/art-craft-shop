@@ -95,7 +95,7 @@ export default function LoginPage() {
       <Header cart={[]} isScrolled={false} />
 
       {/* Login Section */}
-      <main className="flex flex-1 items-center justify-center px-4 py-8 lg:py-16">
+      <main className="flex flex-1 items-center justify-center px-4 py-8 lg:py-4">
         <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           {/* Left Column - Illustration/Text */}
           <motion.div

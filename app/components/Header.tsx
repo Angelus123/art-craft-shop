@@ -26,7 +26,10 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
     { href: '/categories', label: 'Categories' },
     { href: '/artworks', label: 'Artworks' },
     { href: '/gallery', label: 'Gallery' },
-    { href: '/contact', label: 'Contacts' },
+    { href: '/contact', label: 'Contact Us' },
+    // { href: '/about', label: 'About Us' },
+    { href: '/login', label: 'Login' }
+    
   ];
 
   const mainCategories = [
@@ -43,7 +46,7 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
 
   const subCategories = [
     'Offers', 'New In', 'Best Sold', 'Inspiration', 'Ideas',
-    'Stores', 'Workshops', 'Carts', 'Papercraft', 'Orders', 'Sign In'
+    'Stores', 'Workshops', 'Carts', 'Papercraft', 'Orders', 
   ];
 
   return (
@@ -88,7 +91,7 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
                 <input
                   type="text"
                   placeholder="Search products or Categories..."
-                  className="w-full pl-10 pr-4 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm"
+                  className="w-full pl-10 pr-4 py-1.5 border text-gray-500 border-gray-400 rounded-full focus:outline-none focus:ring-2 focus:ring-amber-500 text-sm"
                 />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -178,7 +181,7 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
                   {mainCategories.map((cat) => (
                     <Link
                       key={cat}
-                      href={`/category/${cat.toLowerCase().replace(/\s+/g, '-')}`}
+                      href={`/categories/${cat.toLowerCase().replace(/\s+/g, '-')}`}
                       className="text-xs sm:text-sm text-gray-700 hover:text-amber-700 font-medium px-2 whitespace-nowrap"
                     >
                       {cat}
@@ -191,7 +194,7 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
                   {subCategories.map((cat) => (
                     <Link
                       key={cat}
-                      href={`/category/${cat.toLowerCase().replace(/\s+/g, '-')}`}
+                      href={`/categories/${cat.toLowerCase().replace(/\s+/g, '-')}`}
                       className="text-xs text-gray-600 hover:text-amber-700 px-1 whitespace-nowrap"
                     >
                       {cat}
