@@ -180,13 +180,13 @@ function Products() {
       <div className={`${inter.className} min-h-screen bg-amber-50 py-8`}>
         <div className="container mx-auto px-4">
           <h1 className={`${playfair.className} text-4xl font-bold text-amber-900 mb-8`}>
-            All Products
+            All Artworks
           </h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {products.map((product) => (
               <Link
                 key={product.id}
-                href={`/products/${product.id}`}
+                href={`/artworks/${product.id}`}
                 className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden group"
               >
                 <div className="aspect-square overflow-hidden">
