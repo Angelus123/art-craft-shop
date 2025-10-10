@@ -18,7 +18,7 @@ export async function GET(
 
     return NextResponse.json(product);
   } catch (err) {
-    console.error("❌ GET /products/[id] error:", err);
+    console.error("❌ GET /artworks/[id] error:", err);
     return NextResponse.json({ error: "Failed to fetch product" }, { status: 500 });
   }
 }
@@ -38,7 +38,7 @@ export async function PUT(
 
     return NextResponse.json(product);
   } catch (err) {
-    console.error("❌ PUT /products/[id] error:", err);
+    console.error("❌ PUT /artworks/[id] error:", err);
     return NextResponse.json({ error: "Failed to update product" }, { status: 400 });
   }
 }
@@ -59,7 +59,7 @@ export async function DELETE(
       { status: 200 }
     );
   } catch (err) {
-    console.error("❌ DELETE /products/[id] error:", err);
+    console.error("❌ DELETE /artworks/[id] error:", err);
     return NextResponse.json({ error: "Failed to delete product" }, { status: 400 });
   }
 }

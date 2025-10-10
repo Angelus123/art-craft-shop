@@ -8,13 +8,13 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 const playfair = Playfair_Display({ subsets: ['latin'], weight: ['400', '700'] });
 
 // Product data
-const products = [
+const artworks = [
   {
     id: 1,
     name: 'Handwoven Basket',
     description: 'Intricately woven from natural fibers, perfect for storage or decor.',
     price: 45.99,
-    image: '/images/products/basket.jpg',
+    image: '/images/artworks/basket.jpg',
     category: 'home-decor',
   },
   {
@@ -22,7 +22,7 @@ const products = [
     name: 'Ceramic Vase',
     description: 'Hand-painted with traditional motifs, adds elegance to any space.',
     price: 59.99,
-    image: '/images/products/TKX00217.jpg',
+    image: '/images/artworks/TKX00217.jpg',
     category: 'ceramics',
   },
   {
@@ -30,7 +30,7 @@ const products = [
     name: 'Wooden Sculpture',
     description: 'Carved from sustainable wood, depicting cultural symbols.',
     price: 89.99,
-    image: '/images/products/TKX00247.jpg',
+    image: '/images/artworks/TKX00247.jpg',
     category: 'woodwork',
   },
   {
@@ -38,7 +38,7 @@ const products = [
     name: 'Embroidered Textile',
     description: 'Vibrant patterns hand-stitched by artisans.',
     price: 34.99,
-    image: '/images/products/textiles.jpg',
+    image: '/images/artworks/textiles.jpg',
     category: 'textiles',
   },
   {
@@ -46,7 +46,7 @@ const products = [
     name: 'Beaded Jewelry Set',
     description: 'Colorful beads in traditional designs, includes necklace and earrings.',
     price: 29.99,
-    image: '/images/products/jewelry.jpg',
+    image: '/images/artworks/jewelry.jpg',
     category: 'jewelry',
   },
   {
@@ -54,7 +54,7 @@ const products = [
     name: 'Pottery Bowl',
     description: 'Wheel-thrown and glazed with earthy tones.',
     price: 24.99,
-    image: '/images/products/TKX00247.jpg',
+    image: '/images/artworks/TKX00247.jpg',
     category: 'ceramics',
   },
   {
@@ -62,7 +62,7 @@ const products = [
     name: 'Bamboo Lantern',
     description: 'Eco-friendly lantern with intricate cutouts for ambient lighting.',
     price: 39.99,
-    image: '/images/products/TKX00319.jpg',
+    image: '/images/artworks/TKX00319.jpg',
     category: 'lighting',
   },
   {
@@ -70,7 +70,7 @@ const products = [
     name: 'Silk Scarf',
     description: 'Hand-dyed silk with cultural prints, soft and luxurious.',
     price: 49.99,
-    image: '/images/products/TKX00247.jpg',
+    image: '/images/artworks/TKX00247.jpg',
     category: 'fashion',
   },
   {
@@ -78,7 +78,7 @@ const products = [
     name: 'Metal Wall Art',
     description: 'Hammered metal piece inspired by ancient craftsmanship.',
     price: 74.99,
-    image: '/images/products/TKX00310.jpg',
+    image: '/images/artworks/TKX00310.jpg',
     category: 'metalwork',
   },
   {
@@ -86,7 +86,7 @@ const products = [
     name: 'Leather Journal',
     description: 'Hand-bound with embossed designs, ideal for writing or sketching.',
     price: 32.99,
-    image: '/images/products/TKX00247.jpg',
+    image: '/images/artworks/TKX00247.jpg',
     category: 'stationery',
   },
   {
@@ -94,7 +94,7 @@ const products = [
     name: 'Stone Carving',
     description: 'Detailed sculpture from natural stone, a timeless piece.',
     price: 99.99,
-    image: '/images/products/TKX09970.jpg',
+    image: '/images/artworks/TKX09970.jpg',
     category: 'stonework',
   },
   {
@@ -102,7 +102,7 @@ const products = [
     name: 'Woven Rug',
     description: 'Durable and colorful, hand-loomed from wool and cotton.',
     price: 129.99,
-    image: '/images/products/woodwork.jpg',
+    image: '/images/artworks/woodwork.jpg',
     category: 'textiles',
   },
 ];
@@ -116,16 +116,16 @@ const Hero: React.FC = () => {
   // Auto-slide for background images
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % products.length);
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % artworks.length);
     }, 5000);
     return () => clearInterval(interval);
   }, []);
 
-  // Auto-slide for products
+  // Auto-slide for artworks
   useEffect(() => {
     if (isAutoSliding) {
       const interval = setInterval(() => {
-        setCurrentProductIndex((prev) => (prev + 1) % products.length);
+        setCurrentProductIndex((prev) => (prev + 1) % artworks.length);
       }, 5000);
       timeoutRef.current = interval;
       return () => clearInterval(interval);
@@ -135,14 +135,14 @@ const Hero: React.FC = () => {
   // Handle navigation with pause on interaction
   const handlePrevProduct = () => {
     setIsAutoSliding(false);
-    setCurrentProductIndex((prev) => (prev === 0 ? products.length - 1 : prev - 1));
+    setCurrentProductIndex((prev) => (prev === 0 ? artworks.length - 1 : prev - 1));
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => setIsAutoSliding(true), 10000); // Resume auto-slide after 10s
   };
 
   const handleNextProduct = () => {
     setIsAutoSliding(false);
-    setCurrentProductIndex((prev) => (prev === products.length - 1 ? 0 : prev + 1));
+    setCurrentProductIndex((prev) => (prev === artworks.length - 1 ? 0 : prev + 1));
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => setIsAutoSliding(true), 10000); // Resume auto-slide after 10s
   };
@@ -162,7 +162,7 @@ const Hero: React.FC = () => {
     <section className="relative py-10 min-h-[600px] flex flex-col items-center justify-center overflow-hidden bg-amber-800">
       {/* Background Slider */}
       <div className="absolute inset-0 bg-cover bg-center bg-fixed">
-        {products.map((product, index) => (
+        {artworks.map((product, index) => (
           <motion.div
             key={product.id}
             className="absolute inset-0 bg-cover bg-center"
@@ -230,10 +230,10 @@ const Hero: React.FC = () => {
             <div className="flex flex-col md:flex-row items-center bg-white/95 rounded-xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300">
               {/* Description - Left Side */}
               <div className="w-full md:w-1/2 p-16 md:p-2 md:px-16 text-left">
-                <h3 className={`${playfair.className} text-xl md:text-2xl font-semibold text-gray-800 mb-2`}>{products[currentProductIndex].name}</h3>
-                <p className="text-gray-600 mb-1 text-xs md:text-sm">{products[currentProductIndex].description}</p>
-                <p className="text-amber-600 font-bold text-lg md:text-xl mb-3">${products[currentProductIndex].price.toFixed(2)}</p>
-                <Link href={`/products/${products[currentProductIndex].id}`}>
+                <h3 className={`${playfair.className} text-xl md:text-2xl font-semibold text-gray-800 mb-2`}>{artworks[currentProductIndex].name}</h3>
+                <p className="text-gray-600 mb-1 text-xs md:text-sm">{artworks[currentProductIndex].description}</p>
+                <p className="text-amber-600 font-bold text-lg md:text-xl mb-3">${artworks[currentProductIndex].price.toFixed(2)}</p>
+                <Link href={`/artworks/${artworks[currentProductIndex].id}`}>
                   <button className="bg-amber-500 hover:bg-amber-600 text-white font-semibold py-1 px-4 rounded-full transition duration-300 shadow-md hover:shadow-lg text-sm">
                     View Details
                   </button>
@@ -242,8 +242,8 @@ const Hero: React.FC = () => {
               {/* Image - Right Side */}
               <div className="w-full md:w-1/2 h-[150px]">
                 <img
-                  src={products[currentProductIndex].image}
-                  alt={`Image of ${products[currentProductIndex].name}`}
+                  src={artworks[currentProductIndex].image}
+                  alt={`Image of ${artworks[currentProductIndex].name}`}
                   className="w-full h-full object-contain"
                 />
               </div>
@@ -284,7 +284,7 @@ const Hero: React.FC = () => {
 
       {/* Slider Indicators (Dots) */}
       <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
-        {products.map((_, index) => (
+        {artworks.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentImageIndex(index)}

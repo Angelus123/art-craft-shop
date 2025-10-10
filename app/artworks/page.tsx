@@ -17,13 +17,13 @@ interface Product {
   description: string;
 }
 
-const products = [
+const artworks = [
   {
     id: 1,
     name: 'Handwoven Basket',
     description: 'Intricately woven from natural fibers, perfect for storage or decor. This beautiful basket is crafted by skilled artisans using sustainable materials that are both durable and eco-friendly.',
     price: 45.99,
-    image: '/images/products/basket.jpg',
+    image: '/images/artworks/basket.jpg',
     category: 'home-decor',
   },
   {
@@ -31,7 +31,7 @@ const products = [
     name: 'Ceramic Vase',
     description: 'Hand-painted with traditional motifs, adds elegance to any space. Each vase is unique, featuring patterns passed down through generations of ceramic artists.',
     price: 59.99,
-    image: '/images/products/TKX00217.jpg',
+    image: '/images/artworks/TKX00217.jpg',
     category: 'ceramics',
   },
   {
@@ -39,7 +39,7 @@ const products = [
     name: 'Wooden Sculpture',
     description: 'Carved from sustainable wood, depicting cultural symbols. This sculpture represents the rich heritage and craftsmanship of local woodworkers.',
     price: 89.99,
-    image: '/images/products/TKX00247.jpg',
+    image: '/images/artworks/TKX00247.jpg',
     category: 'woodwork',
   },
   {
@@ -47,7 +47,7 @@ const products = [
     name: 'Embroidered Textile',
     description: 'Vibrant patterns hand-stitched by artisans. Each textile tells a story through its intricate designs and color combinations.',
     price: 34.99,
-    image: '/images/products/textiles.jpg',
+    image: '/images/artworks/textiles.jpg',
     category: 'textiles',
   },
   {
@@ -55,7 +55,7 @@ const products = [
     name: 'Beaded Jewelry Set',
     description: 'Colorful beads in traditional designs, includes necklace and earrings. Made with natural stones and traditional beading techniques.',
     price: 29.99,
-    image: '/images/products/jewelry.jpg',
+    image: '/images/artworks/jewelry.jpg',
     category: 'jewelry',
   },
   {
@@ -63,7 +63,7 @@ const products = [
     name: 'Pottery Bowl',
     description: 'Wheel-thrown and glazed with earthy tones. Each bowl is unique with its own character and finish.',
     price: 24.99,
-    image: '/images/products/TKX00247.jpg',
+    image: '/images/artworks/TKX00247.jpg',
     category: 'ceramics',
   },
   {
@@ -71,7 +71,7 @@ const products = [
     name: 'Bamboo Lantern',
     description: 'Eco-friendly lantern with intricate cutouts for ambient lighting. Creates beautiful patterns when lit.',
     price: 39.99,
-    image: '/images/products/TKX00319.jpg',
+    image: '/images/artworks/TKX00319.jpg',
     category: 'lighting',
   },
   {
@@ -79,7 +79,7 @@ const products = [
     name: 'Silk Scarf',
     description: 'Hand-dyed silk with cultural prints, soft and luxurious. Lightweight and perfect for any occasion.',
     price: 49.99,
-    image: '/images/products/TKX00247.jpg',
+    image: '/images/artworks/TKX00247.jpg',
     category: 'fashion',
   },
   {
@@ -87,7 +87,7 @@ const products = [
     name: 'Metal Wall Art',
     description: 'Hammered metal piece inspired by ancient craftsmanship. Adds a touch of elegance to any wall.',
     price: 74.99,
-    image: '/images/products/TKX00310.jpg',
+    image: '/images/artworks/TKX00310.jpg',
     category: 'metalwork',
   },
   {
@@ -95,7 +95,7 @@ const products = [
     name: 'Leather Journal',
     description: 'Hand-bound with embossed designs, ideal for writing or sketching. Features high-quality paper and durable binding.',
     price: 32.99,
-    image: '/images/products/TKX00247.jpg',
+    image: '/images/artworks/TKX00247.jpg',
     category: 'stationery',
   },
   {
@@ -103,7 +103,7 @@ const products = [
     name: 'Stone Carving',
     description: 'Detailed sculpture from natural stone, a timeless piece. Showcases the natural beauty of the material.',
     price: 99.99,
-    image: '/images/products/TKX09970.jpg',
+    image: '/images/artworks/TKX09970.jpg',
     category: 'stonework',
   },
   {
@@ -111,7 +111,7 @@ const products = [
     name: 'Woven Rug',
     description: 'Durable and colorful, hand-loomed from wool and cotton. Adds warmth and character to any room.',
     price: 129.99,
-    image: '/images/products/woodwork.jpg',
+    image: '/images/artworks/woodwork.jpg',
     category: 'textiles',
   },
 ];
@@ -183,7 +183,7 @@ function Products() {
             All Artworks
           </h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {products.map((product) => (
+            {artworks.map((product) => (
               <Link
                 key={product.id}
                 href={`/artworks/${product.id}`}

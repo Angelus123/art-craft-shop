@@ -7,7 +7,7 @@ import { Inter, Playfair_Display } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
 const playfair = Playfair_Display({ subsets: ['latin'], weight: ['400', '700'] });
 
-// Your products data
+// Your artworks data
 interface Product {
   id: number;
   name: string;
@@ -20,13 +20,13 @@ interface Product {
   isNew: boolean;
 }
 
-const products = [
+const artworks = [
   {
     id: 1,
     name: 'Handwoven Basket',
     description: 'Intricately woven from natural fibers, perfect for storage or decor.',
     price: 45.99,
-    image: '/images/products/basket.jpg',
+    image: '/images/artworks/basket.jpg',
     category: 'home-decor',
     rating: 4.5,
     reviews: 128,
@@ -37,7 +37,7 @@ const products = [
     name: 'Ceramic Vase',
     description: 'Hand-painted with traditional motifs, adds elegance to any space.',
     price: 59.99,
-    image: '/images/products/TKX00217.jpg',
+    image: '/images/artworks/TKX00217.jpg',
     category: 'ceramics',
     rating: 4.8,
     reviews: 89,
@@ -48,7 +48,7 @@ const products = [
     name: 'Wooden Sculpture',
     description: 'Carved from sustainable wood, depicting cultural symbols.',
     price: 89.99,
-    image: '/images/products/TKX00247.jpg',
+    image: '/images/artworks/TKX00247.jpg',
     category: 'woodwork',
     rating: 4.3,
     reviews: 67,
@@ -59,7 +59,7 @@ const products = [
     name: 'Embroidered Textile',
     description: 'Vibrant patterns hand-stitched by artisans.',
     price: 34.99,
-    image: '/images/products/textiles.jpg',
+    image: '/images/artworks/textiles.jpg',
     category: 'textiles',
     rating: 4.6,
     reviews: 203,
@@ -70,7 +70,7 @@ const products = [
     name: 'Beaded Jewelry Set',
     description: 'Colorful beads in traditional designs, includes necklace and earrings.',
     price: 29.99,
-    image: '/images/products/jewelry.jpg',
+    image: '/images/artworks/jewelry.jpg',
     category: 'jewelry',
     rating: 4.9,
     reviews: 156,
@@ -81,7 +81,7 @@ const products = [
     name: 'Silver Tribal Necklace',
     description: 'Handcrafted silver necklace with traditional motifs.',
     price: 89.99,
-    image: '/images/products/jewelry-2.jpg',
+    image: '/images/artworks/jewelry-2.jpg',
     category: 'jewelry',
     rating: 4.7,
     reviews: 92,
@@ -92,7 +92,7 @@ const products = [
     name: 'Gold Plated Earrings',
     description: 'Elegant gold plated earrings with gemstone accents.',
     price: 45.50,
-    image: '/images/products/jewelry-3.jpg',
+    image: '/images/artworks/jewelry-3.jpg',
     category: 'jewelry',
     rating: 4.8,
     reviews: 134,
@@ -103,7 +103,7 @@ const products = [
     name: 'Traditional Bracelet Set',
     description: 'Set of three bracelets with cultural patterns.',
     price: 67.00,
-    image: '/images/products/jewelry-4.jpg',
+    image: '/images/artworks/jewelry-4.jpg',
     category: 'jewelry',
     rating: 4.6,
     reviews: 78,
@@ -114,7 +114,7 @@ const products = [
     name: 'Handwoven Wall Hanging',
     description: 'Beautiful textile art for your walls.',
     price: 75.99,
-    image: '/images/products/textiles-2.jpg',
+    image: '/images/artworks/textiles-2.jpg',
     category: 'home-decor',
     rating: 4.4,
     reviews: 56,
@@ -125,7 +125,7 @@ const products = [
     name: 'Decorative Ceramic Plates',
     description: 'Set of hand-painted decorative plates.',
     price: 52.99,
-    image: '/images/products/ceramics-2.jpg',
+    image: '/images/artworks/ceramics-2.jpg',
     category: 'home-decor',
     rating: 4.7,
     reviews: 89,
@@ -147,12 +147,12 @@ export default function CategoryPage() {
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 
-  // Filter products by category
-  let filteredProducts = products.filter(product => product.category === category);
+  // Filter artworks by category
+  let filteredartworks = artworks.filter(product => product.category === category);
 
   // Apply price range filter
   if (priceRange !== 'all') {
-    filteredProducts = filteredProducts.filter(product => {
+    filteredartworks = filteredartworks.filter(product => {
       switch (priceRange) {
         case 'under-25': return product.price < 25;
         case '25-50': return product.price >= 25 && product.price <= 50;
@@ -164,7 +164,7 @@ export default function CategoryPage() {
   }
 
   // Apply sorting
-  filteredProducts.sort((a, b) => {
+  filteredartworks.sort((a, b) => {
     switch (sortBy) {
       case 'price-low': return a.price - b.price;
       case 'price-high': return b.price - a.price;
@@ -230,12 +230,12 @@ export default function CategoryPage() {
             </h1>
           </div>
           <p className="text-amber-100 text-lg max-w-3xl">
-            Browse our collection of {categoryName.toLowerCase()} products.
+            Browse our collection of {categoryName.toLowerCase()} artworks.
           </p>
           <div className="flex items-center space-x-6 mt-6 text-amber-100">
             <div className="flex items-center space-x-2">
-              <span className="text-2xl font-bold">{filteredProducts.length}</span>
-              <span>{filteredProducts.length === 1 ? 'Product' : 'Products'}</span>
+              <span className="text-2xl font-bold">{filteredartworks.length}</span>
+              <span>{filteredartworks.length === 1 ? 'Product' : 'artworks'}</span>
             </div>
             <div className="flex items-center space-x-2">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -302,14 +302,14 @@ export default function CategoryPage() {
             </div>
           </div>
 
-          {/* Products Grid */}
+          {/* artworks Grid */}
           <div className="flex-1">
             {/* Sorting Bar */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                   <p className="text-gray-600">
-                    Showing <span className="font-semibold">{filteredProducts.length}</span> {filteredProducts.length === 1 ? 'product' : 'products'}
+                    Showing <span className="font-semibold">{filteredartworks.length}</span> {filteredartworks.length === 1 ? 'product' : 'artworks'}
                   </p>
                 </div>
                 <div className="flex items-center space-x-4">
@@ -329,8 +329,8 @@ export default function CategoryPage() {
               </div>
             </div>
 
-            {/* Products Grid */}
-            {filteredProducts.length === 0 ? (
+            {/* artworks Grid */}
+            {filteredartworks.length === 0 ? (
               <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
                 <div className="max-w-md mx-auto">
                   <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -338,9 +338,9 @@ export default function CategoryPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                     </svg>
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">No products found</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">No artworks found</h3>
                   <p className="text-gray-600 mb-6">
-                    Try adjusting your filters to see more products in this category.
+                    Try adjusting your filters to see more artworks in this category.
                   </p>
                   <button
                     onClick={() => {
@@ -355,12 +355,12 @@ export default function CategoryPage() {
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {filteredProducts.map((product) => (
+                {filteredartworks.map((product) => (
                   <div
                     key={product.id}
                     className="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300 group overflow-hidden"
                   >
-                    <Link href={`/products/${product.id}`}>
+                    <Link href={`/artworks/${product.id}`}>
                       <div className="aspect-square relative overflow-hidden bg-gray-100">
                         <div className="w-full h-full flex items-center justify-center text-gray-400">
                           <span>Product Image</span>
@@ -386,7 +386,7 @@ export default function CategoryPage() {
                       </div>
                     </Link>
                     <div className="p-4">
-                      <Link href={`/products/${product.id}`}>
+                      <Link href={`/artworks/${product.id}`}>
                         <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-amber-600 transition-colors line-clamp-2">
                           {product.name}
                         </h3>
@@ -419,10 +419,10 @@ export default function CategoryPage() {
             )}
 
             {/* Load More Button */}
-            {filteredProducts.length > 0 && (
+            {filteredartworks.length > 0 && (
               <div className="text-center mt-12">
                 <button className="bg-white border border-amber-500 text-amber-600 hover:bg-amber-50 px-8 py-3 rounded-lg font-semibold transition-colors">
-                  Load More Products
+                  Load More artworks
                 </button>
               </div>
             )}

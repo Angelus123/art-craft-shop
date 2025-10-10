@@ -94,7 +94,7 @@ const categories = [
 ];
 
 // ======================
-// Products
+// artworks
 // ======================
 const products = [
   {
@@ -102,7 +102,7 @@ const products = [
     description:
       "Intricately woven from natural fibers, perfect for storage or decor.",
     price: 45.99,
-    image: "/images/products/basket.jpg",
+    image: "/images/artworks/basket.jpg",
     category: "home-decor",
     rating: 4.5,
     reviewCount: 128,  // Changed from 'reviews'
@@ -112,7 +112,7 @@ const products = [
     description:
       "Hand-painted with traditional motifs, adds elegance to any space.",
     price: 59.99,
-    image: "/images/products/TKX00217.jpg",
+    image: "/images/artworks/TKX00217.jpg",
     category: "ceramics",
     rating: 4.8,
     reviewCount: 89,  // Changed from 'reviews'
@@ -121,7 +121,7 @@ const products = [
     name: "Wooden Sculpture",
     description: "Carved from sustainable wood, depicting cultural symbols.",
     price: 89.99,
-    image: "/images/products/TKX00247.jpg",
+    image: "/images/artworks/TKX00247.jpg",
     category: "woodwork",
     rating: 4.3,
     reviewCount: 67,  // Changed from 'reviews'
@@ -130,7 +130,7 @@ const products = [
     name: "Embroidered Textile",
     description: "Vibrant patterns hand-stitched by artisans.",
     price: 34.99,
-    image: "/images/products/textiles.jpg",
+    image: "/images/artworks/textiles.jpg",
     category: "textiles",
     rating: 4.6,
     reviewCount: 203,  // Changed from 'reviews'
@@ -140,7 +140,7 @@ const products = [
     description:
       "Colorful beads in traditional designs, includes necklace and earrings.",
     price: 29.99,
-    image: "/images/products/jewelry.jpg",
+    image: "/images/artworks/jewelry.jpg",
     category: "jewelry",
     rating: 4.9,
     reviewCount: 156,  // Changed from 'reviews'
@@ -149,7 +149,7 @@ const products = [
     name: "Silver Tribal Necklace",
     description: "Handcrafted silver necklace with traditional motifs.",
     price: 89.99,
-    image: "/images/products/jewelry-2.jpg",
+    image: "/images/artworks/jewelry-2.jpg",
     category: "jewelry",
     rating: 4.7,
     reviewCount: 92,  // Changed from 'reviews'
@@ -158,7 +158,7 @@ const products = [
     name: "Gold Plated Earrings",
     description: "Elegant gold plated earrings with gemstone accents.",
     price: 45.5,
-    image: "/images/products/jewelry-3.jpg",
+    image: "/images/artworks/jewelry-3.jpg",
     category: "jewelry",
     rating: 4.8,
     reviewCount: 134,  // Changed from 'reviews'
@@ -167,7 +167,7 @@ const products = [
     name: "Traditional Bracelet Set",
     description: "Set of three bracelets with cultural patterns.",
     price: 67.0,
-    image: "/images/products/jewelry-4.jpg",
+    image: "/images/artworks/jewelry-4.jpg",
     category: "jewelry",
     rating: 4.6,
     reviewCount: 78,  // Changed from 'reviews'
@@ -176,7 +176,7 @@ const products = [
     name: "Handwoven Wall Hanging",
     description: "Beautiful textile art for your walls.",
     price: 75.99,
-    image: "/images/products/textiles-2.jpg",
+    image: "/images/artworks/textiles-2.jpg",
     category: "home-decor",
     rating: 4.4,
     reviewCount: 56,  // Changed from 'reviews'
@@ -185,7 +185,7 @@ const products = [
     name: "Decorative Ceramic Plates",
     description: "Set of hand-painted decorative plates.",
     price: 52.99,
-    image: "/images/products/ceramics-2.jpg",
+    image: "/images/artworks/ceramics-2.jpg",
     category: "home-decor",
     rating: 4.7,
     reviewCount: 89,  // Changed from 'reviews'
@@ -374,7 +374,7 @@ async function main() {
     });
   }
 
-  // 👉 Seed Products
+  // 👉 Seed artworks
   console.log("🛍️ Seeding products...");
   for (const p of products) {
     await prisma.product.upsert({

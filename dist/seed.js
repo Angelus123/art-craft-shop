@@ -88,12 +88,12 @@ var categories = [
         productCount: 1
     }
 ];
-var products = [
+var artworks = [
     {
         name: 'Handwoven Basket',
         description: 'Intricately woven from natural fibers, perfect for storage or decor.',
         price: 45.99,
-        image: '/images/products/basket.jpg',
+        image: '/images/artworks/basket.jpg',
         category: 'home-decor',
         rating: 4.5,
         reviews: 128,
@@ -103,7 +103,7 @@ var products = [
         name: 'Ceramic Vase',
         description: 'Hand-painted with traditional motifs, adds elegance to any space.',
         price: 59.99,
-        image: '/images/products/TKX00217.jpg',
+        image: '/images/artworks/TKX00217.jpg',
         category: 'ceramics',
         rating: 4.8,
         reviews: 89,
@@ -113,7 +113,7 @@ var products = [
         name: 'Wooden Sculpture',
         description: 'Carved from sustainable wood, depicting cultural symbols.',
         price: 89.99,
-        image: '/images/products/TKX00247.jpg',
+        image: '/images/artworks/TKX00247.jpg',
         category: 'woodwork',
         rating: 4.3,
         reviews: 67,
@@ -123,7 +123,7 @@ var products = [
         name: 'Embroidered Textile',
         description: 'Vibrant patterns hand-stitched by artisans.',
         price: 34.99,
-        image: '/images/products/textiles.jpg',
+        image: '/images/artworks/textiles.jpg',
         category: 'textiles',
         rating: 4.6,
         reviews: 203,
@@ -133,7 +133,7 @@ var products = [
         name: 'Beaded Jewelry Set',
         description: 'Colorful beads in traditional designs, includes necklace and earrings.',
         price: 29.99,
-        image: '/images/products/jewelry.jpg',
+        image: '/images/artworks/jewelry.jpg',
         category: 'jewelry',
         rating: 4.9,
         reviews: 156,
@@ -143,7 +143,7 @@ var products = [
         name: 'Silver Tribal Necklace',
         description: 'Handcrafted silver necklace with traditional motifs.',
         price: 89.99,
-        image: '/images/products/jewelry-2.jpg',
+        image: '/images/artworks/jewelry-2.jpg',
         category: 'jewelry',
         rating: 4.7,
         reviews: 92,
@@ -153,7 +153,7 @@ var products = [
         name: 'Gold Plated Earrings',
         description: 'Elegant gold plated earrings with gemstone accents.',
         price: 45.50,
-        image: '/images/products/jewelry-3.jpg',
+        image: '/images/artworks/jewelry-3.jpg',
         category: 'jewelry',
         rating: 4.8,
         reviews: 134,
@@ -163,7 +163,7 @@ var products = [
         name: 'Traditional Bracelet Set',
         description: 'Set of three bracelets with cultural patterns.',
         price: 67.00,
-        image: '/images/products/jewelry-4.jpg',
+        image: '/images/artworks/jewelry-4.jpg',
         category: 'jewelry',
         rating: 4.6,
         reviews: 78,
@@ -173,7 +173,7 @@ var products = [
         name: 'Handwoven Wall Hanging',
         description: 'Beautiful textile art for your walls.',
         price: 75.99,
-        image: '/images/products/textiles-2.jpg',
+        image: '/images/artworks/textiles-2.jpg',
         category: 'home-decor',
         rating: 4.4,
         reviews: 56,
@@ -183,7 +183,7 @@ var products = [
         name: 'Decorative Ceramic Plates',
         description: 'Set of hand-painted decorative plates.',
         price: 52.99,
-        image: '/images/products/ceramics-2.jpg',
+        image: '/images/artworks/ceramics-2.jpg',
         category: 'home-decor',
         rating: 4.7,
         reviews: 89,
@@ -192,7 +192,7 @@ var products = [
 ];
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var _i, categories_1, category, _a, products_1, product;
+        var _i, categories_1, category, _a, artworks_1, product;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -214,11 +214,11 @@ function main() {
                     _i++;
                     return [3 /*break*/, 1];
                 case 4:
-                    _a = 0, products_1 = products;
+                    _a = 0, artworks_1 = artworks;
                     _b.label = 5;
                 case 5:
-                    if (!(_a < products_1.length)) return [3 /*break*/, 8];
-                    product = products_1[_a];
+                    if (!(_a < artworks_1.length)) return [3 /*break*/, 8];
+                    product = artworks_1[_a];
                     return [4 /*yield*/, prisma.product.create({
                             data: {
                                 name: product.name,
