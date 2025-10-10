@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Hero from './components/Hero';
+import { useCart } from './context/CartContext';
 
 // Define interfaces for data structures
 interface Product {
@@ -38,7 +39,7 @@ const inter = Inter({ subsets: ['latin'] });
 const playfair = Playfair_Display({ subsets: ['latin'], weight: ['400', '700'] });
 
 export default function Home() {
-  const [cart, setCart] = useState<Product[]>([]);
+  const { addToCart } = useCart();
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
@@ -151,8 +152,17 @@ export default function Home() {
   }, []);
 
   // Basic cart functionality
-  const addToCart = (product: Product): void => {
-    setCart([...cart, product]);
+  const handleAddToCart = (product: Product): void => {
+    addToCart(
+      {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        description: product.description,
+      },
+      1
+    );
     const notification = document.createElement('div');
     notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
     notification.textContent = `${product.name} added to cart!`;
@@ -204,7 +214,7 @@ export default function Home() {
     <div className={`${inter.className} min-h-screen bg-gray-50`}>
 
       {/* Sticky Header */}
-      <Header cart={cart} isScrolled={isScrolled} />
+      <Header isScrolled={isScrolled} />
 
       {/* Hero Section */}
       <Hero />
@@ -305,7 +315,7 @@ export default function Home() {
                       <button
                         onClick={(e) => {
                           e.preventDefault();
-                          addToCart(product);
+                          handleAddToCart(product);
                         }}
                         className="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1 rounded text-sm font-medium transition-colors"
                       >

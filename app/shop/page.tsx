@@ -7,6 +7,7 @@ import { Playfair_Display } from 'next/font/google';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { ChevronLeft, ChevronRight, ZoomIn, Play, Pause, Plus, Minus, ShoppingCart, X, Star, StarHalf, Maximize } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 
 interface Product {
   id: number;
@@ -124,6 +125,7 @@ const Stars: React.FC<{ rating: number; size?: number }> = ({ rating, size = 16 
 };
 
 const Shop: React.FC = () => {
+  const { cart, addToCart } = useCart();
   const [artworksState, setartworksState] = useState(() =>
     initialArtworks.map((p) => ({
       ...p,
@@ -133,7 +135,6 @@ const Shop: React.FC = () => {
     }))
   );
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
-  const [cart, setCart] = useState<Product[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
@@ -225,6 +226,18 @@ const Shop: React.FC = () => {
         idx === currentIndex ? { ...p, stock: p.stock - quantity, sold: p.sold + quantity } : p
       )
     );
+
+    addToCart(
+      {
+        id: currentProduct.id,
+        name: currentProduct.name,
+        price: currentProduct.price,
+        image: currentProduct.image,
+        description: currentProduct.description,
+      },
+      quantity
+    );
+
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 3000);
     setQuantity(1);
@@ -245,7 +258,7 @@ const Shop: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 overflow-hidden">
-      <Header cart={cart} isScrolled={isScrolled} />
+      <Header isScrolled={isScrolled} />
       <section className="py-16 relative">
         {/* Clean Header */}
         <div className="container mx-auto px-4 text-center mb-12">
@@ -571,5 +584,4 @@ const Shop: React.FC = () => {
     </div>
   );
 };
-
 export default Shop;

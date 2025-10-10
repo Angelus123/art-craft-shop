@@ -191,7 +191,7 @@ const Gallery: React.FC = () => {
 
   return (
     <div>
-       <Header cart={cart} isScrolled={isScrolled} />
+       <Header isScrolled={isScrolled} />
     <div className="min-h-screen bg-white py-12 px-4">
       {/* Enhanced Header */}
 

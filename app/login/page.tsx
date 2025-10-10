@@ -92,7 +92,7 @@ export default function LoginPage() {
 
   return (
     <div className={`${inter.className} min-h-screen bg-gradient-to-br from-slate-50 via-white to-amber-50/30 flex flex-col`}>
-      <Header cart={[]} isScrolled={false} />
+      <Header isScrolled={false} />
 
       {/* Login Section */}
       <main className="flex flex-1 items-center justify-center px-4 py-8 lg:py-4">
@@ -106,18 +106,18 @@ export default function LoginPage() {
           >
             <div className="relative w-full max-w-md mt-16">
               {/* Abstract Art Illustration */}
-              <div className="absolute -top-8 -left-8 w-32 h-32 bg-gradient-to-br from-amber-400 to-orange-500 opacity-20 blur-xl"></div>
+              <div className="absolute -top-8 -left-8 w-32 h-32 bg-gradient-to-br from-gray-400 to-gray-500 opacity-20 blur-xl"></div>
               <div className="absolute -bottom-8 -right-8 w-40 h-40 bg-gradient-to-tr from-purple-400 to-pink-500 opacity-20 blur-xl"></div>
 
               <div className="relative bg-white/80 backdrop-blur-sm p-2 shadow-2xl border border-white/50">
-                <div className=" w-80 h-80 bg-gradient-to-br from-amber-600 to-black rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg">
+                <div className=" w-80 h-80 bg-gradient-to-br from-gray-600 to-black rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg">
                   <Link
                     href="/"
                     className="transition-colors"
                     aria-label="Artisan Crafts Home"
                   >
                     <Image
-                      src="/images/logo/insight-logo-dark.png"
+                      src="/images/logo/logo.png"
                       alt="Insight Art Space Logo"
                       width={250} 
                       height={200} // 60 ÷ (80/26) = 19.5
@@ -129,19 +129,6 @@ export default function LoginPage() {
                 <h2 className={`${playfair.className} text-4xl font-bold text-gray-900 mb-4`}>
                   Welcome to <span className="text-amber-600">Insight Art Space</span>
                 </h2>
-                {/* <p className="text-gray-600 text-lg leading-relaxed mb-6">
-                  Discover curated art collections, connect with artists, and bring creativity into your space.
-                </p>
-                <div className="flex justify-center space-x-4 text-sm text-gray-500">
-                  <div className="flex items-center">
-                    <div className="w-2 h-2 bg-amber-500 rounded-full mr-2"></div>
-                    Curated Collections
-                  </div>
-                  <div className="flex items-center">
-                    <div className="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
-                    Artist Community
-                  </div>
-                </div> */}
               </div>
             </div>
           </motion.div>
@@ -156,29 +143,9 @@ export default function LoginPage() {
             <div className="w-full max-w-md bg-white/90 backdrop-blur-sm shadow-2xl rounded-3xl p-2 lg:px-10 border border-white/50">
               {/* Header */}
               <div className="text-center mb-8">
-                {/* <div className="w-16 h-16 bg-gradient-to-br from-black to-black rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg">
-                  <Link
-                    href="/"
-                    className="transition-colors"
-                    aria-label="Artisan Crafts Home"
-                  >
-                    <Image
-                      src="/images/logo/insight-logo.png"
-                      alt="Insight Art Space Logo"
-                      width={30} // Reduced from 80
-                      height={30} // 60 ÷ (80/26) = 19.5
-                      // className={`transition-opacity  ${isScrolled ? 'opacity-90' : 'opacity-100'
-                      //   } hover:opacity-80`}
-                      priority
-                    />
-                  </Link>
-                </div> */}
                 <h1 className={`${playfair.className} text-3xl lg:text-2xl font-bold text-gray-900 mb-1`}>
                   Login
                 </h1>
-                {/* <p className="text-gray-600 text-sm lg:text-base">
-                  Sign in to continue your artistic journey
-                </p> */}
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-1">
@@ -301,40 +268,10 @@ export default function LoginPage() {
                     <span className="px-4 bg-white/90 text-gray-500">Insight Art Space</span>
                   </div>
                 </div>
-                {/* <Link 
-                  href="/signup" 
-                  className="inline-block mt-4 px-6 py-3 border-2 border-gray-200 text-gray-700 hover:border-amber-500 hover:text-amber-600 font-medium rounded-xl transition-all duration-200 hover:shadow-md"
-                >
-                  Create your account
-                </Link> */}
               </div>
 
               {/* Social Login (Optional) */}
               <div className="mt-8">
-                {/* <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-gray-200"></div>
-                  </div>
-                  <div className="relative flex justify-center text-sm">
-                    <span className="px-4 bg-white/90 text-gray-500">Or continue with</span>
-                  </div>
-                </div> */}
-                {/* <div className="mt-4 grid grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    className="flex items-center justify-center px-4 py-3 border border-gray-200 rounded-xl hover:border-gray-300 hover:shadow-sm transition-all duration-200"
-                  >
-                    <span className="mr-2">🔵</span>
-                    <span className="text-sm font-medium">Google</span>
-                  </button>
-                  <button
-                    type="button"
-                    className="flex items-center justify-center px-4 py-3 border border-gray-200 rounded-xl hover:border-gray-300 hover:shadow-sm transition-all duration-200"
-                  >
-                    <span className="mr-2">⚫</span>
-                    <span className="text-sm font-medium">GitHub</span>
-                  </button>
-                </div> */}
               </div>
             </div>
           </motion.div>

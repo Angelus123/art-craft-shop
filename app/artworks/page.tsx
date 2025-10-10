@@ -176,7 +176,7 @@ function Products() {
   }, []);
   return (
     <div>
-      <Header cart={cart} isScrolled={isScrolled} />
+      <Header isScrolled={isScrolled} />
       <div className={`${inter.className} min-h-screen bg-amber-50 py-8`}>
         <div className="container mx-auto px-4">
           <h1 className={`${playfair.className} text-4xl font-bold text-amber-900 mb-8`}>
