@@ -38,37 +38,37 @@ interface PayPalOrder {
 const inter = Inter({ subsets: ['latin'] });
 
 const PayPalButtonWrapper: React.FC<{
-  createPaypalProps: () => PayPalButtonsComponentProps;
-  total: number;
-  onError: (err: any) => void;
-  clearCart: () => void;
-  setShowInvoiceModal: (show: boolean) => void;
-  setOrderDetails: (details: PayPalOrder | null) => void;
-  setPaypalError: (error: string) => void;
-  setIsProcessing: (processing: boolean) => void;
+    createPaypalProps: () => PayPalButtonsComponentProps;
+    total: number;
+    onError: (err: unknown) => void;
+    clearCart: () => void;
+    setShowInvoiceModal: (show: boolean) => void;
+    setOrderDetails: (details: PayPalOrder | null) => void;
+    setPaypalError: (error: string) => void;
+    setIsProcessing: (processing: boolean) => void;
 }> = ({
-  createPaypalProps,
-  total,
-  onError,
-  clearCart,
-  setShowInvoiceModal,
-  setOrderDetails,
-  setPaypalError,
-  setIsProcessing,
+    createPaypalProps,
+    total,
+    onError,
+    clearCart,
+    setShowInvoiceModal,
+    setOrderDetails,
+    setPaypalError,
+    setIsProcessing,
 }) => {
-  const [{ isPending }] = usePayPalScriptReducer();
+    const [{ isPending }] = usePayPalScriptReducer();
 
-  return (
-    <>
-      {isPending ? (
-        <div className="flex justify-center">
-          <div className="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full"></div>
-        </div>
-      ) : (
-        <PayPalButtons {...createPaypalProps()} />
-      )}
-    </>
-  );
+    return (
+        <>
+            {isPending ? (
+                <div className="flex justify-center">
+                    <div className="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full"></div>
+                </div>
+            ) : (
+                <PayPalButtons {...createPaypalProps()} />
+            )}
+        </>
+    );
 };
 
 const CheckoutPage: React.FC = () => {
@@ -85,16 +85,16 @@ const CheckoutPage: React.FC = () => {
   const shippingFee = 10.00;
   const taxRate = 0.1; // 10% tax
 
+  const { cart } = useCart();
   useEffect(() => {
     const stored = localStorage.getItem('checkoutItems');
     if (stored) {
       setCheckoutItems(JSON.parse(stored));
     } else {
       // Fallback to full cart if no selected items
-      const { cart } = useCart();
       setCheckoutItems(cart);
     }
-  }, []);
+  }, [cart]);
 
   const totalItems = checkoutItems.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = checkoutItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -225,7 +225,7 @@ Status: ${orderDetails.status}`;
     },
   });
 
-  const handleError = (err: any) => {
+  const handleError = (err: unknown) => {
     setPaypalError('An error occurred during payment. Please try again.');
     console.error('PayPal error:', err);
   };
