@@ -18,14 +18,14 @@ interface Product {
   description: string;
 }
 
-// Your products data
-const products = [
+// Your artworks data
+const artworks = [
   {
     id: 1,
     name: 'Handwoven Basket',
     description: 'Intricately woven from natural fibers, perfect for storage or decor. This beautiful basket is crafted by skilled artisans using sustainable materials that are both durable and eco-friendly.',
     price: 45.99,
-    image: '/images/products/basket.jpg',
+    image: '/images/artworks/basket.jpg',
     category: 'home-decor',
   },
   {
@@ -33,7 +33,7 @@ const products = [
     name: 'Ceramic Vase',
     description: 'Hand-painted with traditional motifs, adds elegance to any space. Each vase is unique, featuring patterns passed down through generations of ceramic artists.',
     price: 59.99,
-    image: '/images/products/TKX00217.jpg',
+    image: '/images/artworks/TKX00217.jpg',
     category: 'ceramics',
   },
   {
@@ -41,7 +41,7 @@ const products = [
     name: 'Wooden Sculpture',
     description: 'Carved from sustainable wood, depicting cultural symbols. This sculpture represents the rich heritage and craftsmanship of local woodworkers.',
     price: 89.99,
-    image: '/images/products/TKX00247.jpg',
+    image: '/images/artworks/TKX00247.jpg',
     category: 'woodwork',
   },
   {
@@ -49,7 +49,7 @@ const products = [
     name: 'Embroidered Textile',
     description: 'Vibrant patterns hand-stitched by artisans. Each textile tells a story through its intricate designs and color combinations.',
     price: 34.99,
-    image: '/images/products/textiles.jpg',
+    image: '/images/artworks/textiles.jpg',
     category: 'textiles',
   },
   {
@@ -57,7 +57,7 @@ const products = [
     name: 'Beaded Jewelry Set',
     description: 'Colorful beads in traditional designs, includes necklace and earrings. Made with natural stones and traditional beading techniques.',
     price: 29.99,
-    image: '/images/products/jewelry.jpg',
+    image: '/images/artworks/jewelry.jpg',
     category: 'jewelry',
   },
   {
@@ -65,7 +65,7 @@ const products = [
     name: 'Pottery Bowl',
     description: 'Wheel-thrown and glazed with earthy tones. Each bowl is unique with its own character and finish.',
     price: 24.99,
-    image: '/images/products/TKX00247.jpg',
+    image: '/images/artworks/TKX00247.jpg',
     category: 'ceramics',
   },
   {
@@ -73,7 +73,7 @@ const products = [
     name: 'Bamboo Lantern',
     description: 'Eco-friendly lantern with intricate cutouts for ambient lighting. Creates beautiful patterns when lit.',
     price: 39.99,
-    image: '/images/products/TKX00319.jpg',
+    image: '/images/artworks/TKX00319.jpg',
     category: 'lighting',
   },
   {
@@ -81,7 +81,7 @@ const products = [
     name: 'Silk Scarf',
     description: 'Hand-dyed silk with cultural prints, soft and luxurious. Lightweight and perfect for any occasion.',
     price: 49.99,
-    image: '/images/products/TKX00247.jpg',
+    image: '/images/artworks/TKX00247.jpg',
     category: 'fashion',
   },
   {
@@ -89,7 +89,7 @@ const products = [
     name: 'Metal Wall Art',
     description: 'Hammered metal piece inspired by ancient craftsmanship. Adds a touch of elegance to any wall.',
     price: 74.99,
-    image: '/images/products/TKX00310.jpg',
+    image: '/images/artworks/TKX00310.jpg',
     category: 'metalwork',
   },
   {
@@ -97,7 +97,7 @@ const products = [
     name: 'Leather Journal',
     description: 'Hand-bound with embossed designs, ideal for writing or sketching. Features high-quality paper and durable binding.',
     price: 32.99,
-    image: '/images/products/TKX00247.jpg',
+    image: '/images/artworks/TKX00247.jpg',
     category: 'stationery',
   },
   {
@@ -105,7 +105,7 @@ const products = [
     name: 'Stone Carving',
     description: 'Detailed sculpture from natural stone, a timeless piece. Showcases the natural beauty of the material.',
     price: 99.99,
-    image: '/images/products/TKX09970.jpg',
+    image: '/images/artworks/TKX09970.jpg',
     category: 'stonework',
   },
   {
@@ -113,7 +113,7 @@ const products = [
     name: 'Woven Rug',
     description: 'Durable and colorful, hand-loomed from wool and cotton. Adds warmth and character to any room.',
     price: 129.99,
-    image: '/images/products/woodwork.jpg',
+    image: '/images/artworks/woodwork.jpg',
     category: 'textiles',
   },
 ];
@@ -173,7 +173,7 @@ const Product = () => {
   const [selectedImage, setSelectedImage] = useState(0);
 
   // Find the product by ID
-  const product = products.find(p => p.id === parseInt(id));
+  const product = artworks.find(p => p.id === parseInt(id));
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [cart, setCart] = useState<Product[]>([]);
   // Scroll effect for header
@@ -195,10 +195,10 @@ const Product = () => {
             <h1 className={`${playfair.className} text-4xl font-bold text-amber-900 mb-4`}>Product Not Found</h1>
             <p className="text-amber-700 mb-8">The product you&apos;re looking for doesn&apos;t exist.</p>
             <Link
-              href="/products"
+              href="/artworks"
               className="bg-amber-600 hover:bg-amber-700 text-white px-6 py-3 rounded-lg transition-colors"
             >
-              Browse All Products
+              Browse All artworks
             </Link>
           </div>
         </div>
@@ -210,13 +210,13 @@ const Product = () => {
   // Mock product images for gallery
   const productImages = [
     product.image,
-    '/images/products/jewelry-2.jpg',
-    '/images/products/jewelry-3.jpg',
-    '/images/products/jewelry-4.jpg'
+    '/images/artworks/jewelry-2.jpg',
+    '/images/artworks/jewelry-3.jpg',
+    '/images/artworks/jewelry-4.jpg'
   ];
 
-  // Mock related products (products from same category)
-  const relatedProducts = products
+  // Mock related artworks (artworks from same category)
+  const relatedartworks = artworks
     .filter(p => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
 
@@ -264,7 +264,7 @@ const Product = () => {
             <div className="flex items-center space-x-2 text-sm text-amber-700">
               <Link href="/" className="hover:text-amber-900">Home</Link>
               <span>/</span>
-              <Link href="/products" className="hover:text-amber-900">Products</Link>
+              <Link href="/artworks" className="hover:text-amber-900">artworks</Link>
               <span>/</span>
               <Link href={`/categories/${product.category}`} className="hover:text-amber-900 capitalize">
                 {categoryDisplayNames[product.category] || product.category}
@@ -425,17 +425,17 @@ const Product = () => {
             </div>
           </div>
 
-          {/* Related Products */}
-          {relatedProducts.length > 0 && (
+          {/* Related artworks */}
+          {relatedartworks.length > 0 && (
             <section className="mt-16">
               <h2 className={`${playfair.className} text-3xl font-bold text-amber-900 mb-8`}>
-                Related Products
+                Related artworks
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {relatedProducts.map((relatedProduct) => (
+                {relatedartworks.map((relatedProduct) => (
                   <Link
                     key={relatedProduct.id}
-                    href={`/products/${relatedProduct.id}`}
+                    href={`/artworks/${relatedProduct.id}`}
                     className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden group"
                   >
                     <div className="aspect-square overflow-hidden">
@@ -466,10 +466,10 @@ const Product = () => {
   );
 }
 
-const WrappedProducts = () => (
+const Wrappedartworks = () => (
   <CartProvider>
     <Product />
   </CartProvider>
 );
 
-export default WrappedProducts;
+export default Wrappedartworks;

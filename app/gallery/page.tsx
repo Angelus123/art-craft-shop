@@ -22,13 +22,13 @@ interface Product {
   reviews: number;
 }
 
-const products: Product[] = [
+const artworks: Product[] = [
   {
     id: 1,
     name: 'Handwoven Basket',
     description: 'Intricately woven from natural fibers, perfect for storage or decor. This sustainable piece blends traditional craftsmanship with modern eco-conscious design.',
     price: 45.99,
-    image: '/images/products/basket.jpg',
+    image: '/images/artworks/basket.jpg',
     category: 'home-decor',
     dimensions: { width: 3, height: 2 },
     rating: 4.8,
@@ -40,7 +40,7 @@ const products: Product[] = [
     name: 'Ceramic Vase',
     description: 'Hand-painted with bold, contrasting motifs inspired by 2025 trends. Each unique vase features patterns that merge heritage with contemporary personalization.',
     price: 59.99,
-    image: '/images/products/TKX00217.jpg',
+    image: '/images/artworks/TKX00217.jpg',
     category: 'ceramics',
     dimensions: { width: 2, height: 1 },
     rating: 4.7,
@@ -52,7 +52,7 @@ const products: Product[] = [
     name: 'Wooden Sculpture',
     description: 'Carved from sustainable wood with cultural symbols. This piece embodies the craft renaissance, combining organic forms with experimental textures.',
     price: 89.99,
-    image: '/images/products/TKX00247.jpg',
+    image: '/images/artworks/TKX00247.jpg',
     category: 'woodwork',
     dimensions: { width: 2, height: 1 },
     rating: 4.9,
@@ -64,7 +64,7 @@ const products: Product[] = [
     name: 'Embroidered Textile',
     description: 'Vibrant, mismatched patterns hand-stitched by artisans. Tells a story through bold colors and inclusive designs, perfect for personalized spaces.',
     price: 34.99,
-    image: '/images/products/textiles.jpg',
+    image: '/images/artworks/textiles.jpg',
     category: 'textiles',
     dimensions: { width: 1, height: 2 },
     rating: 4.6,
@@ -76,7 +76,7 @@ const products: Product[] = [
     name: 'Beaded Jewelry Set',
     description: 'Colorful beads in expressive designs, including necklace and earrings. Made with natural stones and sustainable techniques for everyday luxury.',
     price: 29.99,
-    image: '/images/products/TKX00247.jpg',
+    image: '/images/artworks/TKX00247.jpg',
     category: 'jewelry',
     dimensions: { width: 1, height: 1 },
     rating: 4.5,
@@ -88,7 +88,7 @@ const products: Product[] = [
     name: 'Pottery Bowl',
     description: 'Wheel-thrown with earthy tones and lo-fi textures. Unique character that aligns with new naturalism trends in sustainable homeware.',
     price: 24.99,
-    image: '/images/products/jewelry.jpg',
+    image: '/images/artworks/jewelry.jpg',
     category: 'pottery',
     dimensions: { width: 3, height: 2 },
     rating: 4.8,
@@ -100,7 +100,7 @@ const products: Product[] = [
     name: 'Bamboo Lantern',
     description: 'Eco-friendly with intricate cutouts for ambient lighting. Creates patterns that evoke \'70s revival with modern sustainable twists.',
     price: 39.99,
-    image: '/images/products/TKX00319.jpg',
+    image: '/images/artworks/TKX00319.jpg',
     category: 'lighting',
     dimensions: { width: 1, height: 1 },
     rating: 4.7,
@@ -113,7 +113,7 @@ const products: Product[] = [
     name: 'Metal Wall Art',
     description: 'Hammered metal inspired by ancient craftsmanship with bold contrasts. Adds elegant, experimental flair to any wall.',
     price: 74.99,
-    image: '/images/products/TKX00310.jpg',
+    image: '/images/artworks/TKX00310.jpg',
     category: 'metalwork',
     dimensions: { width: 3, height: 2 },
     rating: 4.6,
@@ -126,7 +126,7 @@ const products: Product[] = [
     name: 'Stone Carving',
     description: 'Detailed sculpture from natural stone with timeless appeal. Showcases organic beauty and new naturalism in design.',
     price: 99.99,
-    image: '/images/products/TKX09970.jpg',
+    image: '/images/artworks/TKX09970.jpg',
     category: 'stonework',
     dimensions: { width: 1, height: 2 },
     rating: 4.9,
@@ -138,7 +138,7 @@ const products: Product[] = [
     name: 'Woven Rug',
     description: 'Durable and colorful, hand-loomed from wool and cotton. Adds warmth with mismatched patterns and sustainable materials.',
     price: 129.99,
-    image: '/images/products/woodwork.jpg',
+    image: '/images/artworks/woodwork.jpg',
     category: 'home-decor',
     dimensions: { width: 1, height: 2},
     rating: 4.7,
@@ -198,7 +198,7 @@ const Gallery: React.FC = () => {
 
       {/* Asymmetrical Grid Layout */}
       <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-6 max-w-7xl mx-auto auto-rows-[200px]">
-        {products.map((product) => (
+        {artworks.map((product) => (
           <motion.div
             key={product.id}
             className={getGridClass(product.dimensions)}

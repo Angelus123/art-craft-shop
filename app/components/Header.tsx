@@ -74,7 +74,7 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
             <div className="flex-shrink-0">
               <Link href="/" aria-label="Home" className="flex items-center">
                 <Image
-                  src="/images/logo/insight-logo-light.png"
+                  src="/images/logo/logo.png"
                   alt="Insight Art Space Logo"
                   width={220}
                   height={70}

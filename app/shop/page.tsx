@@ -18,90 +18,90 @@ interface Product {
 }
 const playfair = Playfair_Display({ subsets: ['latin'], weight: ['400', '700'] });
 
-const initialProducts = [
+const initialArtworks = [
   {
     id: 1,
     name: 'Handwoven Basket',
     description: 'Intricately woven from natural fibers, perfect for storage or decor. This beautiful basket is crafted by skilled artisans using sustainable materials that are both durable and eco-friendly.',
     price: 45.99,
-    image: '/images/products/basket.jpg',
+    image: '/images/artworks/basket.jpg',
   },
   {
     id: 2,
     name: 'Ceramic Vase',
     description: 'Hand-painted with traditional motifs, adds elegance to any space. Each vase is unique, featuring patterns passed down through generations of ceramic artists.',
     price: 59.99,
-    image: '/images/products/TKX00217.jpg',
+    image: '/images/artworks/TKX00217.jpg',
   },
   {
     id: 3,
     name: 'Wooden Sculpture',
     description: 'Carved from sustainable wood, depicting cultural symbols. This sculpture represents the rich heritage and craftsmanship of local woodworkers.',
     price: 89.99,
-    image: '/images/products/TKX00247.jpg',
+    image: '/images/artworks/TKX00247.jpg',
   },
   {
     id: 4,
     name: 'Embroidered Textile',
     description: 'Vibrant patterns hand-stitched by artisans. Each textile tells a story through its intricate designs and color combinations.',
     price: 34.99,
-    image: '/images/products/textiles.jpg',
+    image: '/images/artworks/textiles.jpg',
   },
   {
     id: 5,
     name: 'Beaded Jewelry Set',
     description: 'Colorful beads in traditional designs, includes necklace and earrings. Made with natural stones and traditional beading techniques.',
     price: 29.99,
-    image: '/images/products/jewelry.jpg',
+    image: '/images/artworks/jewelry.jpg',
   },
   {
     id: 6,
     name: 'Pottery Bowl',
     description: 'Wheel-thrown and glazed with earthy tones. Each bowl is unique with its own character and finish.',
     price: 24.99,
-    image: '/images/products/TKX00247.jpg',
+    image: '/images/artworks/TKX00247.jpg',
   },
   {
     id: 7,
     name: 'Bamboo Lantern',
     description: 'Eco-friendly lantern with intricate cutouts for ambient lighting. Creates beautiful patterns when lit.',
     price: 39.99,
-    image: '/images/products/TKX00319.jpg',
+    image: '/images/artworks/TKX00319.jpg',
   },
   {
     id: 8,
     name: 'Silk Scarf',
     description: 'Hand-dyed silk with cultural prints, soft and luxurious. Lightweight and perfect for any occasion.',
     price: 49.99,
-    image: '/images/products/TKX00247.jpg',
+    image: '/images/artworks/TKX00247.jpg',
   },
   {
     id: 9,
     name: 'Metal Wall Art',
     description: 'Hammered metal piece inspired by ancient craftsmanship. Adds a touch of elegance to any wall.',
     price: 74.99,
-    image: '/images/products/TKX00310.jpg',
+    image: '/images/artworks/TKX00310.jpg',
   },
   {
     id: 10,
     name: 'Leather Journal',
     description: 'Hand-bound with embossed designs, ideal for writing or sketching. Features high-quality paper and durable binding.',
     price: 32.99,
-    image: '/images/products/TKX00247.jpg',
+    image: '/images/artworks/TKX00247.jpg',
   },
   {
     id: 11,
     name: 'Stone Carving',
     description: 'Detailed sculpture from natural stone, a timeless piece. Showcases the natural beauty of the material.',
     price: 99.99,
-    image: '/images/products/TKX09970.jpg',
+    image: '/images/artworks/TKX09970.jpg',
   },
   {
     id: 12,
     name: 'Woven Rug',
     description: 'Durable and colorful, hand-loomed from wool and cotton. Adds warmth and character to any room.',
     price: 129.99,
-    image: '/images/products/woodwork.jpg',
+    image: '/images/artworks/woodwork.jpg',
   },
 ];
 
@@ -124,8 +124,8 @@ const Stars: React.FC<{ rating: number; size?: number }> = ({ rating, size = 16 
 };
 
 const Shop: React.FC = () => {
-  const [productsState, setProductsState] = useState(() =>
-    initialProducts.map((p) => ({
+  const [artworksState, setartworksState] = useState(() =>
+    initialArtworks.map((p) => ({
       ...p,
       rating: parseFloat((Math.random() * 1 + 4).toFixed(1)),
       sold: Math.floor(Math.random() * 990) + 10,
@@ -171,14 +171,14 @@ const Shop: React.FC = () => {
   };
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % productsState.length);
+    setCurrentIndex((prev) => (prev + 1) % artworksState.length);
     setZoomScale(1);
     setShowDescription(false);
     setQuantity(1);
   };
 
   const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + productsState.length) % productsState.length);
+    setCurrentIndex((prev) => (prev - 1 + artworksState.length) % artworksState.length);
     setZoomScale(1);
     setShowDescription(false);
     setQuantity(1);
@@ -217,10 +217,10 @@ const Shop: React.FC = () => {
   };
 
   const handleAddToCart = () => {
-    const currentProduct = productsState[currentIndex];
+    const currentProduct = artworksState[currentIndex];
     if (quantity > currentProduct.stock) return;
 
-    setProductsState((prev) =>
+    setartworksState((prev) =>
       prev.map((p, idx) =>
         idx === currentIndex ? { ...p, stock: p.stock - quantity, sold: p.sold + quantity } : p
       )
@@ -231,7 +231,7 @@ const Shop: React.FC = () => {
   };
 
   const increaseQuantity = () => {
-    const currentProduct = productsState[currentIndex];
+    const currentProduct = artworksState[currentIndex];
     if (quantity < currentProduct.stock) {
       setQuantity((prev) => prev + 1);
     }
@@ -241,7 +241,7 @@ const Shop: React.FC = () => {
     setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
   };
 
-  const currentProduct = productsState[currentIndex];
+  const currentProduct = artworksState[currentIndex];
 
   return (
     <div className="min-h-screen bg-gray-100 overflow-hidden">
@@ -264,7 +264,7 @@ const Shop: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.2 }}
           >
-            Explore our collection of handcrafted art and craft products. Each item is made with care and quality materials.
+            Explore our collection of handcrafted art and craft artworks. Each item is made with care and quality materials.
           </motion.p>
         </div>
 
@@ -448,7 +448,7 @@ const Shop: React.FC = () => {
 
           {/* Product List (Right - 1/3 on md+, below on mobile) */}
           <div className="md:col-span-1 overflow-y-auto max-h-[70vh] space-y-3 pr-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
-            {productsState.map((product, index) => (
+            {artworksState.map((product, index) => (
               <motion.div
                 key={product.id}
                 className={`flex items-center bg-white rounded-lg shadow-md p-3 cursor-pointer transition-all ${

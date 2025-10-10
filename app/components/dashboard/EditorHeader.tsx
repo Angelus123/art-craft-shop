@@ -23,7 +23,7 @@ export default function Header({ theme, setTheme}: HeaderProps) {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
               <Link href="/" className="flex-shrink-0 flex items-center">
-                <div className="w-12 h-12 bg-gray-400 backdrop-blur border border-white/20 rounded-full flex items-center justify-center shadow">
+                <div className="pt-20 bg-black-800 backdrop-blur  rounded-full flex items-center justify-center shadow">
                   {/* Logo */}
         <Link
           href="/"
@@ -31,10 +31,10 @@ export default function Header({ theme, setTheme}: HeaderProps) {
           aria-label="Artisan Crafts Home"
         >
           <Image
-            src="/images/logo/logo.png"
+            src="/images/logo/insight-logo-light.png"
             alt="Insight Art Space Logo"
-            width={20} // Reduced from 80
-            height={20} // 60 ÷ (80/26) = 19.5
+            width={150} // Reduced from 80
+            height={50} // 60 ÷ (80/26) = 19.5
             priority
           />
         </Link>
