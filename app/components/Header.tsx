@@ -4,18 +4,15 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
-
-interface CartItem {
-  id: string | number;
-}
+import { useCart } from '../context/CartContext';
 
 interface NavbarProps {
   isScrolled: boolean;
-  cart?: CartItem[];
 }
 
-export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
+export default function Navbar({ isScrolled }: NavbarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { cart } = useCart();
   const pathname = usePathname();
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -27,9 +24,7 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
     { href: '/artworks', label: 'Artworks' },
     { href: '/gallery', label: 'Gallery' },
     { href: '/contact', label: 'Contact Us' },
-    // { href: '/about', label: 'About Us' },
     { href: '/login', label: 'Login' }
-    
   ];
 
   const mainCategories = [
@@ -48,6 +43,10 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
     'Offers', 'New In', 'Best Sold', 'Inspiration', 'Ideas',
     'Stores', 'Workshops', 'Carts', 'Papercraft', 'Orders', 
   ];
+
+  // Check if current path is cart page
+  const isCartPage = pathname === '/cart';
+  const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   return (
     <>
@@ -109,9 +108,14 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
 
               {/* Cart (always visible, centered on mobile) */}
               <div className="relative md:ml-6 flex justify-center md:justify-end">
-                <button
-                  className="p-2 text-gray-700 hover:text-amber-700 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 rounded-full"
-                  aria-label={`Cart (${cart.length})`}
+                <Link
+                  href="/cart"
+                  className={`p-2 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 rounded-full ${
+                    isCartPage 
+                      ? 'text-amber-700 bg-amber-50' 
+                      : 'text-gray-700 hover:text-amber-700'
+                  }`}
+                  aria-label={`Cart (${cartCount})`}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -121,10 +125,12 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
                   >
                     <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
                   </svg>
-                </button>
-                {cart.length > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center text-[10px]">
-                    {cart.length}
+                </Link>
+                {cartCount > 0 && (
+                  <span className={`absolute -top-1 -right-1 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center text-[10px] ${
+                    isCartPage ? 'bg-amber-600' : 'bg-amber-500'
+                  } animate-pulse`}>
+                    {cartCount}
                   </span>
                 )}
               </div>
@@ -231,6 +237,18 @@ export default function Navbar({ isScrolled, cart = [] }: NavbarProps) {
                     {link.label}
                   </Link>
                 ))}
+                {/* Cart link for mobile menu */}
+                <Link
+                  href="/cart"
+                  className={`block py-2 px-3 text-sm rounded-lg ${
+                    isCartPage
+                      ? 'text-amber-700 font-semibold bg-amber-50'
+                      : 'text-gray-700 hover:text-amber-700 hover:bg-gray-50'
+                  }`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Cart ({cartCount})
+                </Link>
               </div>
             </div>
 

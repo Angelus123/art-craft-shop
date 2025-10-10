@@ -189,7 +189,7 @@ const Product = () => {
   if (!product) {
     return (
       <div className=" mt-30">
-        <Header cart={cart} isScrolled={isScrolled} />
+        <Header isScrolled={isScrolled} />
         <div className="min-h-screen bg-amber-50 mt-30 flex items-center justify-center">
           <div className="text-center">
             <h1 className={`${playfair.className} text-4xl font-bold text-amber-900 mb-4`}>Product Not Found</h1>
@@ -256,7 +256,7 @@ const Product = () => {
 
   return (
     <div>
-      <Header cart={cart} isScrolled={isScrolled} />
+      <Header isScrolled={isScrolled} />
       <div className={`${inter.className} min-h-screen bg-amber-50`}>
         {/* Breadcrumb Navigation */}
         <nav className="bg-white border-b border-amber-200 py-4">

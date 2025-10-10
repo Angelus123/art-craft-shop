@@ -14,7 +14,10 @@
   },
   "dependencies": {
     "@next/font": "^14.2.15",
+    "@paypal/checkout-server-sdk": "^1.0.3",
+    "@paypal/react-paypal-js": "^8.9.2",
     "@prisma/client": "^6.16.3",
+    "@types/paypal__checkout-server-sdk": "^1.0.8",
     "bcrypt": "^6.0.0",
     "framer-motion": "^12.23.13",
     "jsonwebtoken": "^9.0.2",
