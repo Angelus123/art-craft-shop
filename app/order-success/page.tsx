@@ -1,13 +1,33 @@
 'use client';
+
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Inter } from 'next/font/google';
+import { Copy, ArrowLeft, CheckCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
+
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useCart } from '../context/CartContext';
-import { Copy, ArrowLeft } from 'lucide-react';
 
 const inter = Inter({ subsets: ['latin'] });
+
+interface OrderItem {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+  image: string;
+  description: string;
+}
+
+interface PayerInfo {
+  name: {
+    given_name: string;
+    surname?: string;
+  };
+  email_address?: string;
+}
 
 interface OrderData {
   id: string;
@@ -35,71 +55,34 @@ interface OrderData {
   updatedAt: string;
   paidAt: string | null;
   deliveredAt: string | null;
-  items: Array<{
-    id: number;
-    name: string;
-    price: number;
-    quantity: number;
-    image: string;
-    description: string;
-  }>;
+  items: OrderItem[];
+  payer?: PayerInfo;
 }
 
 const OrderSuccessPage: React.FC = () => {
-  const { cart } = useCart();
+  const { clearCart } = useCart();
   const [orderData, setOrderData] = useState<OrderData | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [copied, setCopied] = useState(false);
 
+  // Load last order from localStorage
   useEffect(() => {
-    // Sample order data provided
-    const sampleOrder = {
-      id: "671f8a2b3c4d5e6f78901235",
-      orderNumber: "ORD-002",
-      userId: "64f7b2a1c4d3e5f6a7b8c9d0",
-      status: "DELIVERED",
-      totalAmount: 3210,
-      shippingFee: 0,
-      taxAmount: 10,
-      customerNote: null,
-      shippingFullName: "Sarah Johnson",
-      shippingStreet: "456 Oak Avenue",
-      shippingCity: "Los Angeles",
-      shippingState: "CA",
-      shippingPostalCode: "90210",
-      shippingCountry: "US",
-      shippingPhone: "+1-555-987-6543",
-      billingFullName: "Sarah Johnson",
-      billingStreet: "456 Oak Avenue",
-      billingCity: "Los Angeles",
-      billingState: "CA",
-      billingPostalCode: "90210",
-      billingCountry: "US",
-      createdAt: "2025-10-02T14:30:00.000Z",
-      updatedAt: "2025-10-05T13:48:53.856Z",
-      paidAt: null,
-      deliveredAt: null,
-      items: cart.length > 0 ? cart.map(item => ({
-        id: item.id,
-        name: item.name,
-        price: item.price,
-        quantity: item.quantity,
-        image: item.image,
-        description: item.description,
-      })) : [] // Fallback to empty if cart is empty after clear
-    };
-
-    // Check localStorage first, fallback to sample
     const stored = localStorage.getItem('lastOrder');
     if (stored) {
-      const parsed = JSON.parse(stored);
-      setOrderData({ ...sampleOrder, ...parsed, items: parsed.items || sampleOrder.items });
-    } else {
-      setOrderData(sampleOrder);
-      localStorage.setItem('lastOrder', JSON.stringify(sampleOrder));
+      try {
+        const parsed = JSON.parse(stored);
+        setOrderData(parsed);
+        clearCart(); // runs only once
+        localStorage.removeItem('checkoutItems');
+      } catch (error) {
+        console.error('Error parsing order data:', error);
+      }
     }
-  }, [cart]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // 👈 empty dependency array
 
+
+  // Track scroll for header
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
@@ -107,44 +90,53 @@ const OrderSuccessPage: React.FC = () => {
   }, []);
 
   const copyToClipboard = () => {
-    if (orderData) {
-      const text = `Order Confirmation
-Order Number: ${orderData.orderNumber}
-Customer: ${orderData.shippingFullName}
-Order ID: ${orderData.id}
-Total: $${(orderData.totalAmount / 100).toLocaleString()} (Total Amount: ${orderData.totalAmount})
-Shipping: $${(orderData.shippingFee / 100).toLocaleString()}
-Tax: $${(orderData.taxAmount / 100).toLocaleString()}
-Date: ${new Date(orderData.createdAt).toLocaleString()}
-Status: ${orderData.status}
-Shipping Address: ${orderData.shippingStreet}, ${orderData.shippingCity}, ${orderData.shippingState} ${orderData.shippingPostalCode}, ${orderData.shippingCountry}
-Items: ${orderData.items.map((item) => `${item.name} x${item.quantity}`).join(', ')}`;
-      navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
+    if (!orderData) return;
+
+    const text = `
+                  Order Confirmation
+                  ------------------------
+                  Order Number: ${orderData.orderNumber}
+                  Customer: ${orderData.shippingFullName}
+                  Total: $${(orderData.totalAmount / 100).toFixed(2)}
+                  Status: ${orderData.status}
+                  Date: ${new Date(orderData.createdAt).toLocaleString()}
+                  Items: ${orderData.items.map((item) => `${item.name} x${item.quantity}`).join(', ')}
+                  `;
+
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
-  const formatCurrency = (amount: number) => {
-    // Assuming amounts are in cents, divide by 100 for dollars
-    return `$${(amount / 100).toFixed(2)}`;
-  };
+  const formatCurrency = (amount: number) =>
+    `$${(amount / 100).toFixed(2)}`;
 
   if (!orderData) {
     return (
       <div className={`${inter.className} min-h-screen bg-gray-50`}>
         <Header isScrolled={isScrolled} />
         <main className="flex justify-center items-center min-h-[70vh] px-4">
-          <div className="max-w-md w-full bg-white rounded-xl shadow-md p-8 text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Order Not Found</h2>
-            <p className="text-gray-600 mb-6">No recent order details available.</p>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-md w-full bg-white rounded-xl shadow-md p-8 text-center"
+          >
+            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <CheckCircle className="w-8 h-8 text-gray-400" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              Order Not Found
+            </h2>
+            <p className="text-gray-600 mb-6">
+              No recent order details available.
+            </p>
             <Link
               href="/shop"
               className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors"
             >
               Go to Shop
             </Link>
-          </div>
+          </motion.div>
         </main>
         <Footer />
       </div>
@@ -154,142 +146,179 @@ Items: ${orderData.items.map((item) => `${item.name} x${item.quantity}`).join(',
   return (
     <div className={`${inter.className} min-h-screen bg-gray-50`}>
       <Header isScrolled={isScrolled} />
-      <main className={`${isScrolled ? 'pt-32' : 'pt-14'}`}>
-        <div className="max-w-4xl mx-auto px-4">
-          {/* Back Link */}
-          <div className="mb-6">
-            <Link
-              href="/cart"
-              className="inline-flex items-center text-blue-600 hover:text-blue-700 text-sm font-medium"
-            >
-              <ArrowLeft className="w-4 h-4 mr-1" />
-              Back to Cart
-            </Link>
-          </div>
 
-          <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-8">
+      <main className={`${isScrolled ? 'pt-32' : 'pt-14'} transition-all`}>
+        <div className="max-w-4xl mx-auto px-4 py-8">
+          <Link
+            href="/shop"
+            className="inline-flex items-center text-blue-600 hover:text-blue-700 text-sm font-medium mb-6"
+          >
+            <ArrowLeft className="w-4 h-4 mr-1" />
+            Back to Shop
+          </Link>
+
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="bg-white border border-green-200 rounded-lg shadow-sm p-8"
+          >
+            {/* Success Header */}
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-green-600 mb-2">Order Confirmed! 🎉</h1>
-              <p className="text-gray-600">Thank you for your purchase, {orderData.shippingFullName}.</p>
+              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CheckCircle className="w-10 h-10 text-green-600" />
+              </div>
+              <h1 className="text-3xl font-bold text-green-600 mb-2">
+                Order Confirmed! 🎉
+              </h1>
+              <p className="text-gray-600 text-lg">
+                Thank you for your purchase,{' '}
+                {orderData.payer?.name?.given_name || orderData.shippingFullName}!
+              </p>
+              <p className="text-gray-500 mt-2">
+                A confirmation email has been sent to{' '}
+                {orderData.payer?.email_address || 'your email'}.
+              </p>
             </div>
 
-            {/* Order Details */}
+            {/* Order Info + Address */}
             <div className="grid md:grid-cols-2 gap-8 mb-8">
-              <div>
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">Order Information</h2>
-                <div className="space-y-3 text-sm text-gray-700">
+              {/* Order Info */}
+              <div className="bg-gray-50 p-6 rounded-lg">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                  Order Information
+                </h2>
+                <div className="space-y-2 text-gray-700">
                   <p>
-                    <strong>Order Number:</strong> {orderData.orderNumber}
+                    <span className="font-medium">Order #:</span>{' '}
+                    {orderData.orderNumber}
                   </p>
                   <p>
-                    <strong>Order ID:</strong> {orderData.id}
+                    <span className="font-medium">Date:</span>{' '}
+                    {new Date(orderData.createdAt).toLocaleString()}
                   </p>
                   <p>
-                    <strong>Date:</strong> {new Date(orderData.createdAt).toLocaleString()}
-                  </p>
-                  <p>
-                    <strong>Status:</strong>{' '}
-                    <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">
+                    <span className="font-medium">Status:</span>{' '}
+                    <span className="capitalize text-green-600 font-semibold">
                       {orderData.status}
                     </span>
                   </p>
                   <p>
-                    <strong>Phone:</strong> {orderData.shippingPhone}
+                    <span className="font-medium">Total:</span>{' '}
+                    {formatCurrency(orderData.totalAmount)}
                   </p>
                 </div>
               </div>
 
-              <div>
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">Shipping Address</h2>
-                <div className="space-y-1 text-sm text-gray-700">
-                  <p>{orderData.shippingFullName}</p>
-                  <p>{orderData.shippingStreet}</p>
-                  <p>{orderData.shippingCity}, {orderData.shippingState} {orderData.shippingPostalCode}</p>
+              {/* Address */}
+              <div className="bg-gray-50 p-6 rounded-lg">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                  {orderData.shippingFullName === 'Digital Delivery'
+                    ? 'Delivery Method'
+                    : 'Shipping Address'}
+                </h2>
+                <div className="space-y-2 text-gray-700">
+                  <p className="font-medium">{orderData.shippingFullName}</p>
+                  {orderData.shippingStreet && <p>{orderData.shippingStreet}</p>}
+                  <p>
+                    {orderData.shippingCity}, {orderData.shippingState}{' '}
+                    {orderData.shippingPostalCode}
+                  </p>
                   <p>{orderData.shippingCountry}</p>
                 </div>
               </div>
             </div>
 
-            {/* Billing Address */}
+            {/* Order Items */}
             <div className="mb-8">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Billing Address</h2>
-              <div className="space-y-1 text-sm text-gray-700">
-                <p>{orderData.billingFullName}</p>
-                <p>{orderData.billingStreet}</p>
-                <p>{orderData.billingCity}, {orderData.billingState} {orderData.billingPostalCode}</p>
-                <p>{orderData.billingCountry}</p>
-              </div>
-            </div>
-
-            {/* Payment Summary */}
-            <div className="mb-8">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Payment Summary</h2>
-              <div className="space-y-3 text-sm text-gray-700">
-                <div className="flex justify-between">
-                  <span>Subtotal</span>
-                  <span>{formatCurrency(orderData.totalAmount - orderData.shippingFee - orderData.taxAmount)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Shipping</span>
-                  <span>{formatCurrency(orderData.shippingFee)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Tax</span>
-                  <span>{formatCurrency(orderData.taxAmount)}</span>
-                </div>
-                <div className="border-t pt-2 font-bold">
-                  <div className="flex justify-between">
-                    <span>Total</span>
-                    <span className="text-green-600">{formatCurrency(orderData.totalAmount)}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Items List */}
-            {orderData.items.length > 0 && (
-              <div className="mb-8">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">Order Items</h2>
-                <div className="divide-y divide-gray-200">
-                  {orderData.items.map((item) => (
-                    <div key={item.id} className="py-4 flex items-center space-x-4">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-16 h-16 object-cover rounded-lg flex-shrink-0"
-                      />
-                      <div className="flex-1">
-                        <h4 className="font-medium text-gray-900">{item.name}</h4>
-                        <p className="text-sm text-gray-600">{item.description}</p>
-                        <p className="text-sm text-gray-500">
-                          {item.quantity} x {formatCurrency(item.price)} = {formatCurrency(item.price * item.quantity)}
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                Order Items
+              </h2>
+              <div className="divide-y divide-gray-200 border border-gray-200 rounded-lg">
+                {orderData.items.map((item) => (
+                  <div
+                    key={item.id}
+                    className="p-4 flex items-center space-x-4 hover:bg-gray-50 transition"
+                  >
+                    <img
+                      src={item.image || '/placeholder.png'}
+                      alt={item.name}
+                      className="w-16 h-16 rounded-lg object-cover border border-gray-200"
+                    />
+                    <div className="flex-1">
+                      <p className="font-medium text-gray-900">{item.name}</p>
+                      {item.description && (
+                        <p className="text-sm text-gray-500 mt-1">
+                          {item.description}
+                        </p>
+                      )}
+                      <div className="flex justify-between items-center mt-2">
+                        <p className="text-sm text-gray-600">
+                          {item.quantity} × {formatCurrency(item.price)}
+                        </p>
+                        <p className="font-medium text-gray-900">
+                          {formatCurrency(item.price * item.quantity)}
                         </p>
                       </div>
                     </div>
-                  ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Order Summary */}
+            <div className="bg-gray-50 p-6 rounded-lg mb-8">
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                Order Summary
+              </h2>
+              <div className="space-y-2 text-gray-700">
+                <div className="flex justify-between">
+                  <span>Subtotal:</span>
+                  <span>
+                    {formatCurrency(
+                      orderData.totalAmount -
+                      orderData.taxAmount -
+                      orderData.shippingFee
+                    )}
+                  </span>
+                </div>
+                {orderData.shippingFee > 0 && (
+                  <div className="flex justify-between">
+                    <span>Shipping:</span>
+                    <span>{formatCurrency(orderData.shippingFee)}</span>
+                  </div>
+                )}
+                <div className="flex justify-between">
+                  <span>Tax:</span>
+                  <span>{formatCurrency(orderData.taxAmount)}</span>
+                </div>
+                <div className="flex justify-between border-t border-gray-300 pt-2 font-semibold text-lg">
+                  <span>Total:</span>
+                  <span>{formatCurrency(orderData.totalAmount)}</span>
                 </div>
               </div>
-            )}
+            </div>
 
-            {/* Actions */}
-            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+            {/* Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                 onClick={copyToClipboard}
-                className="flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
               >
                 <Copy className="w-4 h-4 mr-2" />
                 {copied ? 'Copied!' : 'Copy Order Details'}
               </button>
               <Link
-                href="//shop"
-                className="flex items-center justify-center px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                href="/shop"
+                className="flex items-center justify-center px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium text-center"
               >
                 Continue Shopping
               </Link>
             </div>
-          </div>
+          </motion.div>
         </div>
       </main>
+
       <Footer />
     </div>
   );
