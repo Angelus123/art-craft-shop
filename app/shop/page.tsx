@@ -1,6 +1,4 @@
-// app/Shop/page.tsx
 'use client';
-
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Playfair_Display } from 'next/font/google';
@@ -263,7 +261,7 @@ const Shop: React.FC = () => {
         {/* Clean Header */}
         <div className="container mx-auto px-4 text-center mb-12">
           <motion.h1
-            className={`${playfair.className} text-4xl md:text-6xl font-bold text-gray-800 mb-4`}
+            className={`${playfair.className} text-4xl mt-5 md:text-6xl font-bold text-gray-800 mb-4`}
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
